@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth/auth"
 import { revalidatePath } from "next/cache"
+import { SPOTLIGHT_LOCAL_ID_PREFIX } from "@/components/shared/spotlight/stage"
 
 async function requireAdmin() {
   const session = await auth()
@@ -444,6 +445,21 @@ type SpotlightImageData = {
   mobileWidthPercent?: number | null; mobileHeightPercent?: number | null; mobileRotation?: number | null;
 }
 
+/** Editor-local ids for photos that have never been persisted. See spotlight-admin. */
+const isLocalSpotlightId = (id: string) => id.startsWith(SPOTLIGHT_LOCAL_ID_PREFIX)
+
+/**
+ * Atomic Spotlight save.
+ *
+ * The editor keeps add / delete / duplicate local until Save, so this is the only
+ * place Spotlight rows change. One interactive transaction reconciles the whole
+ * composition — setting upsert, removal of dropped rows, update of existing rows,
+ * creation of new ones — so a failure on any image rolls the setting back too and
+ * never leaves a half-saved Spotlight.
+ *
+ * Returns the id each editor row was persisted as, so the client can rebase its
+ * local ids without re-fetching.
+ */
 export async function saveAllSpotlight(setting: {
   eyebrow?: string; heading?: string; supportingText?: string;
   primaryCtaLabel?: string; primaryCtaDestination?: string; primaryCtaVisible?: boolean;
@@ -452,68 +468,47 @@ export async function saveAllSpotlight(setting: {
   collageStyle?: string; frameStyle?: string; collageHeight?: string;
 }, images: SpotlightImageData[]) {
   await requireAdmin()
-  const existingSetting = await prisma.homeSpotlightSetting.findFirst()
-  if (existingSetting) {
-    await prisma.homeSpotlightSetting.update({ where: { id: existingSetting.id }, data: setting })
-  } else {
-    await prisma.homeSpotlightSetting.create({ data: setting })
-  }
-  for (const img of images) {
-    const { id, ...rest } = img
-    await prisma.homeSpotlightImage.update({ where: { id }, data: rest })
-  }
-  revalidatePath("/admin/home")
-  revalidatePath("/")
-}
 
-export async function addSpotlightImage(data: { mediaUrl: string; altText?: string; sortOrder: number; zIndex: number }) {
-  await requireAdmin()
-  const item = await prisma.homeSpotlightImage.create({ data: { ...data, isVisible: true } })
-  revalidatePath("/admin/home")
-  revalidatePath("/")
-  return item
-}
+  // Presets are geometry starters only; the persisted render mode is always the
+  // saved free-form geometry.
+  const settingData = { ...setting, collageStyle: "freeform" }
 
-export async function deleteSpotlightImage(id: string) {
-  await requireAdmin()
-  await prisma.homeSpotlightImage.delete({ where: { id } })
-  revalidatePath("/admin/home")
-  revalidatePath("/")
-}
-
-export async function duplicateSpotlightImage(id: string) {
-  await requireAdmin()
-  const original = await prisma.homeSpotlightImage.findUnique({ where: { id } })
-  if (!original) throw new Error("Image not found")
-  const maxSort = await prisma.homeSpotlightImage.aggregate({ _max: { sortOrder: true } })
-  const item = await prisma.homeSpotlightImage.create({
-    data: {
-      mediaUrl: original.mediaUrl,
-      altText: original.altText ? original.altText + " (copy)" : "Copy",
-      caption: original.caption,
-      isVisible: true,
-      sortOrder: (maxSort._max.sortOrder ?? 0) + 1,
-      rotation: original.rotation,
-      sizeVariant: original.sizeVariant,
-      frameWidth: original.frameWidth,
-      frameHeight: original.frameHeight,
-      offsetX: original.offsetX,
-      offsetY: original.offsetY,
-      xPercent: original.xPercent + 5,
-      yPercent: original.yPercent + 5,
-      widthPercent: original.widthPercent,
-      heightPercent: original.heightPercent,
-      zIndex: original.zIndex + 1,
-      framePreset: original.framePreset,
-      shadowPreset: original.shadowPreset,
-      mobileXPercent: original.mobileXPercent,
-      mobileYPercent: original.mobileYPercent,
-      mobileWidthPercent: original.mobileWidthPercent,
-      mobileHeightPercent: original.mobileHeightPercent,
-      mobileRotation: original.mobileRotation,
+  const result = await prisma.$transaction(async (tx) => {
+    const existingSetting = await tx.homeSpotlightSetting.findFirst({ select: { id: true } })
+    if (existingSetting) {
+      await tx.homeSpotlightSetting.update({ where: { id: existingSetting.id }, data: settingData })
+    } else {
+      await tx.homeSpotlightSetting.create({ data: settingData })
     }
-  })
-  revalidatePath("/admin/home")
+
+    const existingRows = await tx.homeSpotlightImage.findMany({ select: { id: true } })
+    const existingIds = new Set(existingRows.map((r) => r.id))
+    const keptIds = new Set(images.map((i) => i.id).filter((id) => !isLocalSpotlightId(id)))
+    const removedIds = [...existingIds].filter((id) => !keptIds.has(id))
+    if (removedIds.length > 0) {
+      await tx.homeSpotlightImage.deleteMany({ where: { id: { in: removedIds } } })
+    }
+
+    const idMap: { localId: string; id: string }[] = []
+    for (let index = 0; index < images.length; index++) {
+      const { id, ...rest } = images[index]
+      const data = { ...rest, sortOrder: index }
+      if (!isLocalSpotlightId(id) && existingIds.has(id)) {
+        await tx.homeSpotlightImage.update({ where: { id }, data })
+        idMap.push({ localId: id, id })
+      } else {
+        // A row deleted in the editor and restored with Undo keeps its original id.
+        const created = await tx.homeSpotlightImage.create({
+          data: isLocalSpotlightId(id) ? data : { ...data, id },
+        })
+        idMap.push({ localId: id, id: created.id })
+      }
+    }
+    return { images: idMap }
+  }, { timeout: 20000, maxWait: 10000 })
+
   revalidatePath("/")
-  return item
+  revalidatePath("/admin/spotlight")
+  revalidatePath("/admin/home")
+  return result
 }

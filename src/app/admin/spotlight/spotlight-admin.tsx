@@ -11,13 +11,24 @@ import {
   LayoutTemplate, GripVertical, X,
   Info, ArrowUpCircle, ArrowDownCircle, PanelLeft, PanelRight,
 } from "lucide-react"
-import {
-  saveAllSpotlight, addSpotlightImage, deleteSpotlightImage, duplicateSpotlightImage,
-} from "../settings/actions"
+import { saveAllSpotlight } from "../settings/actions"
 import { MediaPicker } from "@/components/admin/media/media-picker"
-import type { SpotlightImage, SpotlightSetting } from "@/components/public/shared/spotlight-collage"
+import {
+  SPOTLIGHT_LOCAL_ID_PREFIX,
+  SPOTLIGHT_STAGE,
+  resolveSpotlightGeometry,
+  type SpotlightImage,
+  type SpotlightSetting,
+} from "@/components/shared/spotlight/stage"
+import { SpotlightStage } from "@/components/shared/spotlight/spotlight-stage"
 
 const MAX_PHOTOS = 20
+
+/** Photos added in the editor stay local (never in the DB) until Save. */
+function makeLocalId() {
+  const rand = typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)
+  return `${SPOTLIGHT_LOCAL_ID_PREFIX}${rand}`
+}
 
 /* ─── WORKSPACE SIZE HOOK (ResizeObserver) ─── */
 function useWorkspaceSize(ref: React.RefObject<HTMLDivElement | null>) {
@@ -162,9 +173,20 @@ function useHistory(initial: HistoryState) {
     setPresent(next)
   }, [future, present])
 
+  /**
+   * Rewrite every entry (past, present, future) without creating a history step.
+   * Used after a save to swap editor-local photo ids for the persisted ones, so
+   * undoing across a save cannot resurrect a stale local id.
+   */
+  const rebase = useCallback((fn: (state: HistoryState) => HistoryState) => {
+    setPast((p) => p.map(fn))
+    setPresent((p) => fn(p))
+    setFuture((f) => f.map(fn))
+  }, [])
+
   const canUndo = past.length > 0
   const canRedo = future.length > 0
-  return { present, push, undo, redo, canUndo, canRedo }
+  return { present, push, undo, redo, rebase, canUndo, canRedo }
 }
 
 /* ─── MAIN COMPONENT ─── */
@@ -183,7 +205,13 @@ export function SpotlightAdmin({
     collageStyle: "freeform", frameStyle: "editorial", collageHeight: "auto",
   }
 
-  const { present, push, undo, redo, canUndo, canRedo } = useHistory({
+  const { present, push, undo, redo, rebase, canUndo, canRedo } = useHistory({
+    setting: initialSetting ?? defaultSetting,
+    images: initialImages,
+  })
+
+  /** Last persisted composition — what Reset reverts to. */
+  const [baseline, setBaseline] = useState<HistoryState>({
     setting: initialSetting ?? defaultSetting,
     images: initialImages,
   })
@@ -194,7 +222,7 @@ export function SpotlightAdmin({
   const [viewport, setViewport] = useState<"desktop" | "mobile">("desktop")
   const [editMode, setEditMode] = useState<"edit" | "preview">("edit")
   const [zoomMode, setZoomMode] = useState<"fit" | number>("fit")
-  const effectiveScaleRef = useRef(1)
+  const [activePreset, setActivePreset] = useState<string | null>(null)
   const [showGrid, setShowGrid] = useState(false)
   const [leftTab, setLeftTab] = useState<"content" | "photos" | "background" | "presets" | "layers">("photos")
   const [leftCollapsed, setLeftCollapsed] = useState(false)
@@ -243,7 +271,19 @@ export function SpotlightAdmin({
   const handleSave = async () => {
     setIsSaving(true)
     try {
-      await saveAllSpotlight({ ...setting, collageStyle: "freeform" }, images)
+      const result = await saveAllSpotlight({ ...setting, collageStyle: "freeform" }, images)
+      const persistedId = new Map(result.images.map((m) => [m.localId, m.id]))
+      const applyIds = (state: HistoryState): HistoryState => ({
+        setting: { ...state.setting, collageStyle: "freeform" },
+        images: state.images.map((img, index) => ({
+          ...img,
+          id: persistedId.get(img.id) ?? img.id,
+          sortOrder: index,
+        })),
+      })
+      rebase(applyIds)
+      setSelectedId((id) => (id ? persistedId.get(id) ?? id : null))
+      setBaseline(applyIds({ setting, images }))
       setHasUnsaved(false)
       toast.success("Spotlight saved successfully")
     } catch {
@@ -255,54 +295,105 @@ export function SpotlightAdmin({
 
   const handleReset = () => {
     if (!confirm("Revert all unsaved changes?")) return
-    push({ setting: initialSetting ?? defaultSetting, images: initialImages })
+    push(baseline)
     setHasUnsaved(false)
     setSelectedId(null)
     toast.info("Reverted to saved state")
   }
 
-  const handleAddPhoto = async () => {
+  /* Add / delete / duplicate are LOCAL editor operations. Nothing touches the
+     database until Save, which is what makes Undo/Redo real. */
+  const handleAddPhoto = () => {
     if (images.length >= MAX_PHOTOS) return toast.error(`Maximum ${MAX_PHOTOS} photos`)
-    const sort = images.length > 0 ? Math.max(...images.map((i) => i.sortOrder)) + 1 : 0
     const z = images.length > 0 ? Math.max(...images.map((i) => i.zIndex)) + 1 : 1
-    try {
-      const item = await addSpotlightImage({ mediaUrl: "", altText: `Photo ${images.length + 1}`, sortOrder: sort, zIndex: z })
-      const newImg: SpotlightImage = { ...item, xPercent: 10 + (images.length % 3) * 30, yPercent: 10 + Math.floor(images.length / 3) * 30, widthPercent: 40, heightPercent: 56, isLocked: false, framePreset: "editorial", shadowPreset: "soft", mobileXPercent: null, mobileYPercent: null, mobileWidthPercent: null, mobileHeightPercent: null, mobileRotation: null }
-      push({ setting, images: [...images, newImg] })
-      setHasUnsaved(true)
-      setLeftTab("photos")
-    } catch { toast.error("Failed to add photo") }
+    const newImg: SpotlightImage = {
+      id: makeLocalId(),
+      mediaUrl: null,
+      altText: `Photo ${images.length + 1}`,
+      caption: null,
+      isVisible: true,
+      isLocked: false,
+      sortOrder: images.length,
+      rotation: 0,
+      sizeVariant: "normal",
+      frameWidth: "auto",
+      frameHeight: "auto",
+      offsetX: "0",
+      offsetY: "0",
+      xPercent: 10 + (images.length % 3) * 30,
+      yPercent: 10 + Math.floor(images.length / 3) * 30,
+      widthPercent: 40,
+      heightPercent: 56,
+      zIndex: z,
+      framePreset: "editorial",
+      shadowPreset: "soft",
+      mobileXPercent: null,
+      mobileYPercent: null,
+      mobileWidthPercent: null,
+      mobileHeightPercent: null,
+      mobileRotation: null,
+    }
+    push({ setting, images: [...images, newImg] })
+    setHasUnsaved(true)
+    setLeftTab("photos")
+    setSelectedId(newImg.id)
   }
 
-  const handleDeletePhoto = async (id: string) => {
-    try {
-      await deleteSpotlightImage(id)
-      push({ setting, images: images.filter((i) => i.id !== id) })
-      if (selectedId === id) setSelectedId(null)
-      setHasUnsaved(true)
-    } catch { toast.error("Failed to delete") }
-  }
+  const handleDeletePhoto = useCallback((id: string) => {
+    push({ setting, images: images.filter((i) => i.id !== id) })
+    if (selectedId === id) setSelectedId(null)
+    setHasUnsaved(true)
+  }, [setting, images, selectedId, push])
 
-  const handleDuplicatePhoto = async (id: string) => {
+  const handleDuplicatePhoto = useCallback((id: string) => {
     if (images.length >= MAX_PHOTOS) return toast.error(`Maximum ${MAX_PHOTOS} photos`)
-    try {
-      const item = await duplicateSpotlightImage(id)
-      const newImg: SpotlightImage = { ...item }
-      push({ setting, images: [...images, newImg] })
-      setHasUnsaved(true)
-    } catch { toast.error("Failed to duplicate") }
-  }
+    const src = images.find((i) => i.id === id)
+    if (!src) return
+    const copy: SpotlightImage = {
+      ...src,
+      id: makeLocalId(),
+      altText: src.altText ? `${src.altText} (copy)` : "Copy",
+      isVisible: true,
+      sortOrder: images.length,
+      zIndex: Math.max(...images.map((i) => i.zIndex)) + 1,
+      xPercent: src.xPercent + 5,
+      yPercent: src.yPercent + 5,
+      mobileXPercent: src.mobileXPercent != null ? src.mobileXPercent + 5 : null,
+      mobileYPercent: src.mobileYPercent != null ? src.mobileYPercent + 5 : null,
+    }
+    push({ setting, images: [...images, copy] })
+    setSelectedId(copy.id)
+    setHasUnsaved(true)
+  }, [setting, images, push])
 
+  /**
+   * Presets are geometry STARTERS only — they seed coordinates for the viewport
+   * being edited. The render mode itself is always the saved free-form geometry,
+   * so a preset is never a rendering mode and `collageStyle` is left alone.
+   */
   const handleApplyPreset = (presetKey: string) => {
     const preset = PRESETS[presetKey]
     if (!preset) return
-    const newImages = images.map((img, i) => ({
-      ...img,
-      ...(preset.positions[i % preset.positions.length]),
-    }))
-    push({ setting: { ...setting, collageStyle: presetKey }, images: newImages })
+    const isMobile = viewport === "mobile"
+    const newImages = images.map((img, i) => {
+      const p = preset.positions[i % preset.positions.length]
+      if (isMobile) {
+        return {
+          ...img,
+          mobileXPercent: p.xPercent,
+          mobileYPercent: p.yPercent,
+          mobileWidthPercent: p.widthPercent,
+          mobileHeightPercent: p.heightPercent,
+          mobileRotation: p.rotation,
+          zIndex: p.zIndex,
+        }
+      }
+      return { ...img, ...p }
+    })
+    push({ setting, images: newImages })
+    setActivePreset(presetKey)
     setHasUnsaved(true)
-    toast.success(`Applied "${preset.name}" preset`)
+    toast.success(`Applied "${preset.name}" preset to ${isMobile ? "Mobile" : "Desktop"}`)
   }
 
   const handleResetLayout = () => {
@@ -318,12 +409,11 @@ export function SpotlightAdmin({
     setHasUnsaved(true)
   }
 
-  const getPos = (img: SpotlightImage) => {
-    if (viewport === "mobile") {
-      return { x: img.mobileXPercent ?? img.xPercent, y: img.mobileYPercent ?? img.yPercent, w: img.mobileWidthPercent ?? img.widthPercent, h: img.mobileHeightPercent ?? img.heightPercent, r: img.mobileRotation ?? img.rotation }
-    }
-    return { x: img.xPercent, y: img.yPercent, w: img.widthPercent, h: img.heightPercent, r: img.rotation }
-  }
+  /** Editor geometry comes from the SAME resolver the public page uses. */
+  const getPos = useCallback((img: SpotlightImage) => {
+    const g = resolveSpotlightGeometry(img, viewport)
+    return { x: g.x, y: g.y, w: g.w, h: g.h, r: g.rotation }
+  }, [viewport])
 
   const setPos = useCallback((id: string, x: number, y: number, w: number, h?: number, r?: number) => {
     const clampXY = (v: number) => Math.round(Math.max(-20, Math.min(100, v)) * 10) / 10
@@ -353,9 +443,10 @@ export function SpotlightAdmin({
       e.preventDefault()
       const canvas = canvasRef.current
       const rect = canvas.getBoundingClientRect()
-      const s = effectiveScaleRef.current
-      const dxPct = ((e.clientX - dragRef.current.startX) / rect.width) * 100 * s
-      const dyPct = ((e.clientY - dragRef.current.startY) / rect.height) * 100 * s
+      // rect is already in screen space (it includes the zoom transform), so the
+      // delta must NOT be scaled a second time.
+      const dxPct = ((e.clientX - dragRef.current.startX) / rect.width) * 100
+      const dyPct = ((e.clientY - dragRef.current.startY) / rect.height) * 100
       const d = dragRef.current
 
       if (d.type === "move") {
@@ -439,7 +530,7 @@ export function SpotlightAdmin({
     window.addEventListener("pointermove", handlePointerMove)
     window.addEventListener("pointerup", handlePointerUp)
     return () => { window.removeEventListener("pointermove", handlePointerMove); window.removeEventListener("pointerup", handlePointerUp) }
-  }, [images, viewport, setPos])
+  }, [images, viewport, setPos, getPos])
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -461,7 +552,7 @@ export function SpotlightAdmin({
     }
     window.addEventListener("keydown", handler)
     return () => window.removeEventListener("keydown", handler)
-  }, [selectedId, images, viewport, undo, redo, setPos])
+  }, [selectedId, images, viewport, undo, redo, setPos, getPos, handleDeletePhoto, handleDuplicatePhoto])
 
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
@@ -473,24 +564,14 @@ export function SpotlightAdmin({
 
   const sortedForLayers = useMemo(() => [...images].sort((a, b) => b.zIndex - a.zIndex), [images])
 
-  /* ─── COLLAGE CANVAS HEIGHT ─── */
-  const collageHeight = useMemo(() => {
-    if (viewport === "mobile") {
-      const photosWithMobile = images.filter((i) => i.isVisible && i.mobileYPercent != null && i.mobileHeightPercent != null)
-      if (photosWithMobile.length === 0) return 500
-      const maxBottom = Math.max(...photosWithMobile.map((i) => (i.mobileYPercent ?? 0) + (i.mobileHeightPercent ?? 0)))
-      return Math.max(500, Math.ceil(maxBottom * 5))
-    }
-    return 500
-  }, [images, viewport])
-
-  /* ─── CANVAS DESIGN DIMENSIONS ─── */
-  const DESKTOP_W = 900
-  const DESKTOP_H = 500
-  const MOBILE_W = 375
-
-  const canvasDesignW = viewport === "mobile" ? MOBILE_W : DESKTOP_W
-  const canvasDesignH = viewport === "mobile" ? collageHeight : DESKTOP_H
+  /* ─── CANVAS DESIGN DIMENSIONS ───
+     Fixed per viewport, from the shared stage. A stage that grew with its content
+     would change the denominator of every saved percentage, so one photo moving
+     would drag all the others — and the public page could not reproduce it
+     without measuring in JS. */
+  const stage = SPOTLIGHT_STAGE[viewport]
+  const canvasDesignW = stage.width
+  const canvasDesignH = stage.height
 
   /* ─── WORKSPACE AVAILABLE SIZE ─── */
   const availableW = workspaceSize.w
@@ -504,7 +585,6 @@ export function SpotlightAdmin({
 
   /* ─── EFFECTIVE SCALE ─── */
   const effectiveScale = zoomMode === "fit" ? fitScale : zoomMode / 100
-  useEffect(() => { effectiveScaleRef.current = effectiveScale })
 
   const canvasStyle = useMemo(() => ({
     transform: `scale(${effectiveScale})`,
@@ -520,15 +600,15 @@ export function SpotlightAdmin({
   }), [canvasDesignW, canvasDesignH, effectiveScale])
 
   return (
-    <div ref={containerRef} className="h-screen flex flex-col bg-muted/30 overflow-hidden min-w-0">
+    <div ref={containerRef} className="h-[calc(100vh-4rem)] -m-4 lg:-m-6 flex flex-col bg-muted/30 overflow-hidden min-w-0">
       {/* ─── TOP TOOLBAR ─── */}
       <div className="h-12 bg-card border-b border-border/50 flex items-center justify-between px-2 md:px-4 shrink-0 z-50 overflow-hidden">
         <div className="flex items-center gap-1.5 md:gap-3 min-w-0">
           <a href="/admin/home" className="text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0">&larr; Back</a>
           <div className="w-px h-5 bg-border/50 shrink-0 hidden sm:block" />
           <div className="flex rounded-md border border-border/50 overflow-hidden shrink-0">
-            <button onClick={() => setViewport("desktop")} className={`px-2 py-1 text-[11px] font-medium transition-colors flex items-center gap-1 ${viewport === "desktop" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}><Monitor className="h-4 w-4" /></button>
-            <button onClick={() => setViewport("mobile")} className={`px-2 py-1 text-[11px] font-medium transition-colors flex items-center gap-1 ${viewport === "mobile" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}><Smartphone className="h-4 w-4" /></button>
+            <button onClick={() => setViewport("desktop")} title="Desktop stage" aria-label="Desktop stage" className={`px-2 py-1 text-[11px] font-medium transition-colors flex items-center gap-1 ${viewport === "desktop" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}><Monitor className="h-4 w-4" /></button>
+            <button onClick={() => setViewport("mobile")} title="Mobile stage" aria-label="Mobile stage" className={`px-2 py-1 text-[11px] font-medium transition-colors flex items-center gap-1 ${viewport === "mobile" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}><Smartphone className="h-4 w-4" /></button>
           </div>
           <div className="w-px h-5 bg-border/50 shrink-0 hidden sm:block" />
           <button onClick={undo} disabled={!canUndo} className="p-1.5 rounded hover:bg-muted disabled:opacity-30 transition-colors shrink-0 hidden sm:block" title="Undo (Ctrl+Z)"><Undo2 className="h-4 w-4" /></button>
@@ -658,10 +738,10 @@ export function SpotlightAdmin({
               {leftTab === "presets" && (
                 <div className="space-y-2">
                   {Object.entries(PRESETS).map(([key, preset]) => (
-                    <button key={key} onClick={() => handleApplyPreset(key)} className={`w-full text-left rounded-lg border p-3 transition-all ${setting.collageStyle === key ? "border-primary bg-primary/5" : "border-border/50 hover:border-border bg-card"}`}>
+                    <button key={key} onClick={() => handleApplyPreset(key)} className={`w-full text-left rounded-lg border p-3 transition-all ${activePreset === key ? "border-primary bg-primary/5" : "border-border/50 hover:border-border bg-card"}`}>
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-xs font-semibold">{preset.name}</span>
-                        {setting.collageStyle === key && <span className="text-[8px] font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">ACTIVE</span>}
+                        {activePreset === key && <span className="text-[8px] font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">APPLIED</span>}
                       </div>
                       <p className="text-[9px] text-muted-foreground">{preset.desc}</p>
                       <div className="relative mt-2 h-12 bg-slate-100 dark:bg-slate-800 rounded overflow-hidden">
@@ -671,7 +751,8 @@ export function SpotlightAdmin({
                       </div>
                     </button>
                   ))}
-                  <div className="pt-2 border-t border-border/30">
+                  <div className="pt-2 border-t border-border/30 space-y-2">
+                    <p className="text-[9px] text-muted-foreground">Presets are starting layouts for the <strong>{viewport === "mobile" ? "Mobile" : "Desktop"}</strong> stage. After applying one you can still move every photo freely — what gets published is always your saved geometry.</p>
                     <button onClick={handleResetLayout} className="w-full py-2 rounded-lg border border-border/50 text-[10px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"><RotateCcw className="h-4 w-4 inline mr-1" />Reset Layout</button>
                   </div>
                 </div>
@@ -707,52 +788,28 @@ export function SpotlightAdmin({
         )}
 
         {/* ─── MAIN CANVAS ─── */}
-        <div ref={workspaceRef} className="flex-1 min-w-0 overflow-hidden relative flex items-start justify-center p-4 md:p-8" onClick={() => { if (editMode === "edit") setSelectedId(null) }}>
-          <div style={canvasWrapStyle}>
+        <div
+          ref={workspaceRef}
+          className={`flex-1 min-w-0 relative flex p-4 md:p-8 ${zoomMode === "fit" ? "overflow-hidden" : "overflow-auto"}`}
+          onClick={() => { if (editMode === "edit") setSelectedId(null) }}
+        >
+          <div style={canvasWrapStyle} className="m-auto">
             <div style={canvasStyle}>
-              <div
-                ref={canvasRef}
-                className="relative bg-gradient-to-br from-[#0f2847] via-[#153561] to-[#0d2240] rounded-xl overflow-hidden shadow-2xl"
-              >
-                {/* Grid overlay */}
-                {showGrid && (
-                  <div className="absolute inset-0 pointer-events-none z-50" style={{
-                    backgroundImage: "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
-                    backgroundSize: "50px 50px",
-                  }} />
-                )}
-
-                {/* Background */}
-                {setting.backgroundImage && (
-                  <div className="absolute inset-0">
-                    <img src={setting.backgroundImage} alt="" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-[#0f2847]" style={{ opacity: setting.backgroundOverlayStrength }} />
-                  </div>
-                )}
-
-                {/* Content preview */}
-                <div className="relative p-6 sm:p-8 lg:p-10">
-                  <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-blue-300/90 mb-2">{setting.eyebrow}</p>
-                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-tight text-white mb-3 max-w-md">{setting.heading}</h1>
-                  {setting.supportingText && <p className="text-sm text-blue-100/65 max-w-md mb-4">{setting.supportingText}</p>}
-                  <div className="flex gap-2">
-                    {setting.primaryCtaVisible && <span className="inline-flex items-center rounded-lg bg-white text-[#0f2847] px-4 py-2 text-xs font-semibold">{setting.primaryCtaLabel}</span>}
-                    {setting.secondaryCtaVisible && <span className="inline-flex items-center rounded-lg border border-white/20 text-white/90 px-4 py-2 text-xs">{setting.secondaryCtaLabel}</span>}
-                  </div>
-                </div>
-
-                {/* Photos */}
-                {images.filter((i) => i.isVisible && i.mediaUrl).map((img) => {
-                  const pos = getPos(img)
+              <SpotlightStage
+                setting={setting}
+                images={images}
+                viewport={viewport}
+                sizing="fixed"
+                stageRef={canvasRef}
+                className="rounded-xl shadow-2xl"
+                renderPhoto={({ img, geo, style, frame }) => {
+                  const pos = { x: geo.x, y: geo.y, w: geo.w, h: geo.h, r: geo.rotation }
                   const isSelected = selectedId === img.id && editMode === "edit"
                   return (
                     <div
-                      key={img.id}
-                      className={`absolute ${editMode === "edit" && !img.isLocked ? "cursor-grab active:cursor-grabbing" : ""}`}
-                      style={{
-                        left: `${pos.x}%`, top: `${pos.y}%`, width: `${pos.w}%`, height: `${pos.h}%`,
-                        transform: `rotate(${pos.r}deg)`, zIndex: img.zIndex + (isSelected ? 100 : 0),
-                      }}
+                      data-spotlight-photo={img.id}
+                      className={editMode === "edit" && !img.isLocked ? "cursor-grab active:cursor-grabbing" : ""}
+                      style={{ ...style, zIndex: img.zIndex + (isSelected ? 100 : 0) }}
                       onClick={(e) => { e.stopPropagation(); if (editMode === "edit") selectPhoto(img.id) }}
                       onPointerDown={(e) => {
                         if (editMode !== "edit" || img.isLocked) return
@@ -765,7 +822,7 @@ export function SpotlightAdmin({
                       }}
                     >
                       <div className="relative w-full h-full">
-                        <AdminPhotoFrame src={img.mediaUrl!} alt={img.altText || ""} framePreset={img.framePreset} shadowPreset={img.shadowPreset} />
+                        {frame}
                         {isSelected && (
                           <>
                             <div className="absolute inset-[-1px] border-2 border-primary/80 pointer-events-none" />
@@ -849,16 +906,24 @@ export function SpotlightAdmin({
                       </div>
                     </div>
                   )
-                })}
+                }}
+              >
+                {/* Grid overlay */}
+                {showGrid && (
+                  <div className="absolute inset-0 pointer-events-none z-50" style={{
+                    backgroundImage: "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
+                    backgroundSize: "50px 50px",
+                  }} />
+                )}
 
                 {images.filter((i) => i.isVisible && i.mediaUrl).length === 0 && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white/20">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white/20 pointer-events-none">
                     <Image className="h-12 w-12 mb-3" />
                     <p className="text-sm">No photos in collage</p>
                     <p className="text-xs mt-1">Click &quot;Add Photo&quot; in the left panel</p>
                   </div>
                 )}
-              </div>
+              </SpotlightStage>
             </div>
           </div>
         </div>
@@ -1046,17 +1111,7 @@ function InspectorContent({
               <option value="clean">Clean</option>
               <option value="minimal">Minimal</option>
             </select>
-          </div>
-          <div className="space-y-2">
-            <Label className="text-[10px] font-semibold">Collage Height</Label>
-            <select value={setting.collageHeight} onChange={(e) => updateSetting({ collageHeight: e.target.value })} className="w-full h-7 rounded border border-input bg-background px-2 text-xs">
-              <option value="auto">Auto</option>
-              <option value="300px">Small</option>
-              <option value="360px">Medium</option>
-              <option value="420px">Large</option>
-              <option value="480px">X-Large</option>
-              <option value="540px">XX-Large</option>
-            </select>
+            <p className="text-[9px] text-muted-foreground">Fallback frame for photos without their own frame preset.</p>
           </div>
           <p className="text-[9px] text-muted-foreground">Click a photo on the canvas to inspect its properties.</p>
         </>
@@ -1065,7 +1120,7 @@ function InspectorContent({
   )
 }
 
-/* ─── PHOTO FRAME ─── */
+/* ─── SELECTION HANDLE POSITIONING ─── */
 function parsePosition(cls: string): React.CSSProperties {
   const s: React.CSSProperties = {}
   if (cls.includes("top-0")) s.top = 0
@@ -1073,31 +1128,4 @@ function parsePosition(cls: string): React.CSSProperties {
   if (cls.includes("left-0")) s.left = 0
   if (cls.includes("right-0")) s.right = 0
   return s
-}
-
-function AdminPhotoFrame({ src, alt, framePreset, shadowPreset }: { src: string; alt: string; framePreset: string; shadowPreset: string }) {
-  const [error, setError] = React.useState(false)
-  const frames: Record<string, string> = {
-    editorial: "p-[5px] border-[3px] border-white/22 rounded-lg",
-    clean: "p-1 border-2 border-white/20 rounded-md",
-    polaroid: "p-1 pb-5 border-[3px] border-white/25 rounded-sm",
-    glass: "p-1 border border-white/30 rounded-xl",
-    none: "p-0",
-  }
-  const shadows: Record<string, string> = {
-    none: "", soft: "shadow-[0_4px_16px_rgba(0,0,0,0.15)]",
-    medium: "shadow-[0_6px_24px_rgba(0,0,0,0.28)]",
-    editorial: "shadow-[0_8px_32px_rgba(0,0,0,0.35)]",
-  }
-  return (
-    <div className={`w-full h-full bg-white/95 ${frames[framePreset] || frames.editorial} ${shadows[shadowPreset] || shadows.soft}`}>
-      <div className="w-full h-full overflow-hidden rounded">
-        {error ? (
-          <div className="w-full h-full bg-red-500/10 flex items-center justify-center text-red-400 text-[9px] text-center px-2">Image unavailable</div>
-        ) : (
-          <img src={src} alt={alt} className="w-full h-full object-cover" loading="lazy" onError={() => setError(true)} />
-        )}
-      </div>
-    </div>
-  )
 }
