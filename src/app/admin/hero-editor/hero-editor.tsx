@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Switch } from "@/components/ui/switch"
 import { toast } from "sonner"
-import { Save, Monitor, Smartphone, RotateCcw, GripVertical, Plus, Trash2, Copy, User, Scissors, Loader2, Check, Square, CheckSquare } from "lucide-react"
+import { Save, Monitor, Smartphone, RotateCcw, GripVertical, Plus, Trash2, Copy, User, Scissors, Loader2, Check, Square, CheckSquare, BadgeCheck } from "lucide-react"
 import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 import { updateHeroOverlayAdmin, createHeroOverlayAdmin, deleteHeroOverlayAdmin, duplicateHeroOverlayAdmin, bulkDeleteHeroOverlaysAdmin } from "../settings/actions"
 import { MediaPicker } from "@/components/admin/media/media-picker"
@@ -44,6 +45,8 @@ interface BrandSettings {
   heroOverlayStyle?: string
   heroMobileLayout?: string
   heroMobilePortraitHeight?: string
+  heroBadgeText?: string
+  heroShowBadge?: boolean
   profileImage?: string | null
 }
 
@@ -297,6 +300,8 @@ export function HeroEditorPage({ initialOverlays, initialBrand }: { initialOverl
             heroOverlayStyle: brand.heroOverlayStyle,
             heroMobileLayout: brand.heroMobileLayout,
             heroMobilePortraitHeight: brand.heroMobilePortraitHeight,
+            heroBadgeText: (brand.heroBadgeText ?? "").trim(),
+            heroShowBadge: brand.heroShowBadge ?? true,
           }),
         }),
       ])
@@ -470,6 +475,58 @@ export function HeroEditorPage({ initialOverlays, initialBrand }: { initialOverl
 
         {/* Controls Panel */}
         <div className="space-y-4">
+          {/* Status Badge */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm flex items-center gap-2">
+                <BadgeCheck className="h-4 w-4" />
+                Status Badge
+              </CardTitle>
+              <CardDescription>The small status chip above the name on the public Hero</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-1">
+                <Label className="text-[10px]" htmlFor="hero-status-badge-text">Status Badge Text</Label>
+                <Input
+                  id="hero-status-badge-text"
+                  value={brand.heroBadgeText ?? ""}
+                  onChange={(e) => setBrand({ ...brand, heroBadgeText: e.target.value })}
+                  placeholder="Currently Practicing"
+                  className="h-8 text-xs"
+                />
+              </div>
+
+              <div className="flex items-center justify-between gap-3">
+                <div className="space-y-0.5">
+                  <Label className="text-[10px]">Show Status Badge</Label>
+                  <p className="text-[10px] text-muted-foreground">Off removes the badge from the public Hero entirely.</p>
+                </div>
+                <Switch
+                  checked={brand.heroShowBadge ?? true}
+                  onCheckedChange={(checked) => setBrand({ ...brand, heroShowBadge: checked })}
+                  aria-label="Show status badge"
+                />
+              </div>
+
+              {/* Live preview — same chip markup as the public Hero */}
+              <div className="space-y-1 pt-1 border-t border-border/50">
+                <Label className="text-[10px] text-muted-foreground">Preview</Label>
+                {(brand.heroShowBadge ?? true) && (brand.heroBadgeText ?? "").trim() ? (
+                  <div data-hero-status-badge-preview="" className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.2em] uppercase text-primary border border-primary/20 bg-primary/5 px-3 py-1.5 rounded-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                    {(brand.heroBadgeText ?? "").trim()}
+                  </div>
+                ) : (
+                  <p className="text-[10px] text-muted-foreground">
+                    {(brand.heroShowBadge ?? true)
+                      ? "No badge — the text is empty."
+                      : "Badge is hidden on the public Hero."}
+                  </p>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Doctor Portrait */}
           <Card>
             <CardHeader>

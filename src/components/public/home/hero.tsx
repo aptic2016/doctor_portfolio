@@ -106,7 +106,7 @@ export async function Hero() {
         {/* Identity block below portrait */}
         <div className="flex-1 px-5 py-6 space-y-4">
           {brand?.heroShowBadge && brand?.heroBadgeText && (
-            <div className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.2em] uppercase text-primary border border-primary/20 bg-primary/5 px-3 py-1.5 rounded-sm">
+            <div data-hero-status-badge="" className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.2em] uppercase text-primary border border-primary/20 bg-primary/5 px-3 py-1.5 rounded-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
               {brand.heroBadgeText}
             </div>
@@ -179,7 +179,7 @@ export async function Hero() {
           {/* Text column */}
           <div className="col-span-7 space-y-5">
             {brand?.heroShowBadge && brand?.heroBadgeText && (
-              <div className="hero-fade hero-delay-1 inline-flex items-center gap-2 text-sm font-bold tracking-[0.2em] uppercase text-primary border border-primary/20 bg-primary/5 px-3 py-1.5 rounded-sm">
+              <div data-hero-status-badge="" className="hero-fade hero-delay-1 inline-flex items-center gap-2 text-sm font-bold tracking-[0.2em] uppercase text-primary border border-primary/20 bg-primary/5 px-3 py-1.5 rounded-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                 {brand.heroBadgeText}
               </div>

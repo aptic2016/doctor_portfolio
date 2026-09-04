@@ -12487,3 +12487,1428 @@ https://react.dev/link/hydration-mismatch
     at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:61:22) 
 [browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
  GET / 200 in 1998ms (next.js: 4ms, application-code: 1994ms)
+ POST /admin/spotlight 200 in 2.1s (next.js: 6ms, proxy.ts: 4ms, application-code: 2.1s)
+  └─ ƒ saveAllSpotlight({"backgroundImage":"https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png","backgroundOverlayStrength":0.97,"collageHeight":"auto","...":"13 items not stringified"}, [{"altText":"Clinical Practice","caption":"Medical Conference","frameHeight":"auto","...":"23 items not stringified"},{"altText":"Professional Portrait","caption":"Professional Portrait","frameHeight":"auto","...":"23 items not stringified"},{"altText":"Academic Achievement","caption":"Academic Achievement","frameHeight":"auto","...":"23 items not stringified"}]) in 1409ms src/app/admin/settings/actions.ts
+ GET / 200 in 2.4s (next.js: 5ms, application-code: 2.4s)
+[browser] Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en" className="geist_a715..." suppressHydrationWarning={true}>
+                          <head>
+                          <body
+                            className="min-h-full flex flex-col"
+-                           cz-shortcut-listen="true"
+                          >
+                            ...
+                              <button onClick={function onClick} className="h-8 w-8 in..." title="Theme">
+                                <Moon className="h-3.5 w-3.5">
+                                  <svg
+                                    ref={null}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width={24}
+                                    height={24}
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
++                                   className="lucide lucide-moon h-3.5 w-3.5"
+-                                   className="lucide lucide-monitor h-3.5 w-3.5"
+                                    aria-hidden="true"
+                                  >
++                                   <path
++                                     d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268..."
++                                   >
+-                                   <rect width="20" height="14" x="2" y="3" rx="2">
+                  ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at path (<anonymous>)
+    at Array.map (<anonymous>)
+    at Navbar (src/components/public/layout/navbar.tsx:104:38)
+    at PublicLayout (src\app\(public)\layout.tsx:53:7)
+  102 |               >
+  103 |                 {theme === "light" && <Sun className="h-3.5 w-3.5" />}
+> 104 |                 {theme === "dark" && <Moon className="h-3.5 w-3.5" />}
+      |                                      ^
+  105 |                 {theme === "system" && <Monitor className="h-3.5 w-3.5" />}
+  106 |               </button>
+  107 |               {themeOpen && (
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?216:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?216:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?195:271:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?197:300:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?203:557:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?205:583:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?151:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?148:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?47:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?84:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?48:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?176:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?50:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?265:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?168:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?51:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ POST /admin/spotlight 200 in 1615ms (next.js: 6ms, proxy.ts: 3ms, application-code: 1605ms)
+  └─ ƒ saveAllSpotlight({"backgroundImage":"https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png","backgroundOverlayStrength":0.97,"collageHeight":"auto","...":"13 items not stringified"}, [{"altText":"Clinical Practice","caption":"Medical Conference","frameHeight":"auto","...":"23 items not stringified"},{"altText":"Professional Portrait","caption":"Professional Portrait","frameHeight":"auto","...":"23 items not stringified"},{"altText":"Academic Achievement","caption":"Academic Achievement","frameHeight":"auto","...":"23 items not stringified"}]) in 1008ms src/app/admin/settings/actions.ts
+ GET / 200 in 1887ms (next.js: 5ms, application-code: 1883ms)
+[browser] Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en" className="geist_a715..." suppressHydrationWarning={true}>
+                          <head>
+                          <body
+                            className="min-h-full flex flex-col"
+-                           cz-shortcut-listen="true"
+                          >
+                            ...
+                              <button onClick={function onClick} className="h-8 w-8 in..." title="Theme">
+                                <Moon className="h-3.5 w-3.5">
+                                  <svg
+                                    ref={null}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width={24}
+                                    height={24}
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
++                                   className="lucide lucide-moon h-3.5 w-3.5"
+-                                   className="lucide lucide-monitor h-3.5 w-3.5"
+                                    aria-hidden="true"
+                                  >
++                                   <path
++                                     d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268..."
++                                   >
+-                                   <rect width="20" height="14" x="2" y="3" rx="2">
+                  ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at path (<anonymous>)
+    at Array.map (<anonymous>)
+    at Navbar (src/components/public/layout/navbar.tsx:104:38)
+    at PublicLayout (src\app\(public)\layout.tsx:53:7)
+  102 |               >
+  103 |                 {theme === "light" && <Sun className="h-3.5 w-3.5" />}
+> 104 |                 {theme === "dark" && <Moon className="h-3.5 w-3.5" />}
+      |                                      ^
+  105 |                 {theme === "system" && <Monitor className="h-3.5 w-3.5" />}
+  106 |               </button>
+  107 |               {themeOpen && (
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?222:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?222:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?201:271:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?203:300:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?209:557:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?211:583:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?144:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?173:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?47:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?153:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?48:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?182:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?50:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?271:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?89:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?51:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+ GET /admin/hero-editor 200 in 1337ms (next.js: 227ms, proxy.ts: 4ms, application-code: 1106ms)
+ GET /admin/profile 200 in 510ms (next.js: 128ms, proxy.ts: 3ms, application-code: 378ms)
+ GET /admin/profile 200 in 1196ms (next.js: 74ms, proxy.ts: 8ms, application-code: 1113ms)
+ GET / 200 in 2.0s (next.js: 10ms, application-code: 2.0s)
+ GET /admin/profile 200 in 775ms (next.js: 15ms, proxy.ts: 86ms, application-code: 673ms)
+ GET / 200 in 1657ms (next.js: 13ms, application-code: 1644ms)
+ GET /admin/profile 200 in 785ms (next.js: 11ms, proxy.ts: 91ms, application-code: 683ms)
+ GET / 200 in 1632ms (next.js: 12ms, application-code: 1620ms)
+ GET /admin/profile 200 in 779ms (next.js: 12ms, proxy.ts: 98ms, application-code: 668ms)
+ GET / 200 in 1634ms (next.js: 14ms, application-code: 1620ms)
+ GET /admin/profile 200 in 778ms (next.js: 11ms, proxy.ts: 63ms, application-code: 704ms)
+ GET / 200 in 1740ms (next.js: 54ms, application-code: 1686ms)
+ GET /admin/profile 200 in 728ms (next.js: 12ms, proxy.ts: 86ms, application-code: 631ms)
+ GET / 200 in 1644ms (next.js: 18ms, application-code: 1625ms)
+✓ Compiled in 592ms
+ GET /admin/login 200 in 726ms (next.js: 12ms, proxy.ts: 3ms, application-code: 711ms)
+ GET /api/auth/providers 200 in 26ms (next.js: 15ms, application-code: 11ms)
+ GET /api/auth/csrf 200 in 10ms (next.js: 4ms, application-code: 6ms)
+ POST /api/auth/callback/credentials? 200 in 783ms (next.js: 3ms, application-code: 780ms)
+ GET /admin 200 in 728ms (next.js: 16ms, proxy.ts: 4ms, application-code: 708ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?20:14:263) 
+ GET /admin/hero-editor 200 in 940ms (next.js: 14ms, proxy.ts: 3ms, application-code: 923ms)
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AdminLayout (http://localhost:3000/_next/static/chunks/_1dr0og3._.js:2454:237)
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?32:14:263) 
+ GET /admin/hero-editor 200 in 644ms (next.js: 5ms, proxy.ts: 4ms, application-code: 635ms)
+ GET /admin/login 200 in 1221ms (next.js: 5ms, proxy.ts: 3ms, application-code: 1214ms)
+ GET /api/auth/providers 200 in 15ms (next.js: 8ms, application-code: 7ms)
+ GET /api/auth/csrf 200 in 8ms (next.js: 2ms, application-code: 6ms)
+ POST /api/auth/callback/credentials? 200 in 830ms (next.js: 2ms, application-code: 827ms)
+ GET /admin 200 in 1035ms (next.js: 11ms, proxy.ts: 7ms, application-code: 1017ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AdminLayout (http://localhost:3000/_next/static/chunks/_1dr0og3._.js:2454:237)
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?20:14:263) 
+ GET /admin/hero-editor 200 in 757ms (next.js: 5ms, proxy.ts: 3ms, application-code: 749ms)
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AdminLayout (http://localhost:3000/_next/static/chunks/_1dr0og3._.js:2454:237)
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?32:14:263) 
+ GET /admin/hero-editor 200 in 839ms (next.js: 8ms, proxy.ts: 5ms, application-code: 826ms)
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/admin/her..." notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en" className="geist_a715..." suppressHydrationWarning={true}>
+                          <head>
+                          <body
+                            className="min-h-full flex flex-col"
+-                           cz-shortcut-listen="true"
+                          >
+                            ...
+                              <div className="flex items...">
+                                <Button>
+                                <Button variant="ghost" size="sm" onClick={function onClick} className="h-8 w-8 p-..." ...>
+                                  <Button data-slot="button" className={"group/bu..."} onClick={function onClick} ...>
+                                    <button
+                                      type="button"
+                                      onClick={function}
+                                      onMouseDown={function}
+                                      onKeyDown={function}
+                                      onKeyUp={function}
+                                      onPointerDown={function}
+                                      tabIndex={0}
+                                      disabled={false}
+                                      data-slot="button"
+                                      title="Dark"
+                                      ref={function}
++                                     className={"group/button inline-flex shrink-0 items-center justify-center borde..."}
+-                                     className={"group/button inline-flex shrink-0 items-center justify-center borde..."}
+                                    >
+                                <Button variant="ghost" size="sm" onClick={function onClick} className="h-8 w-8 p-..." ...>
+                                  <Button data-slot="button" className={"group/bu..."} onClick={function onClick} ...>
+                                    <button
+                                      type="button"
+                                      onClick={function}
+                                      onMouseDown={function}
+                                      onKeyDown={function}
+                                      onKeyUp={function}
+                                      onPointerDown={function}
+                                      tabIndex={0}
+                                      disabled={false}
+                                      data-slot="button"
+                                      title="System"
+                                      ref={function}
++                                     className={"group/button inline-flex shrink-0 items-center justify-center borde..."}
+-                                     className={"group/button inline-flex shrink-0 items-center justify-center borde..."}
+                                    >
+                  ...
+ 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AdminLayout (http://localhost:3000/_next/static/chunks/_1dr0og3._.js:2454:237)
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?32:14:263) 
+ GET /admin/login 200 in 705ms (next.js: 5ms, proxy.ts: 2ms, application-code: 697ms)
+ GET /api/auth/providers 200 in 16ms (next.js: 8ms, application-code: 7ms)
+ GET /api/auth/csrf 200 in 8ms (next.js: 3ms, application-code: 5ms)
+ POST /api/auth/callback/credentials? 200 in 784ms (next.js: 2ms, application-code: 782ms)
+ GET /admin 200 in 1081ms (next.js: 11ms, proxy.ts: 7ms, application-code: 1063ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?20:14:263) 
+ GET /admin/hero-editor 200 in 766ms (next.js: 5ms, proxy.ts: 3ms, application-code: 758ms)
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AdminLayout (http://localhost:3000/_next/static/chunks/_1dr0og3._.js:2454:237)
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?32:14:263) 
+ POST /api/admin/brand-settings 200 in 1236ms (next.js: 537ms, application-code: 699ms)
+ POST /admin/hero-editor 200 in 956ms (next.js: 14ms, proxy.ts: 16ms, application-code: 925ms)
+  └─ ƒ updateHeroOverlayAdmin("cmtlzvx900000czw72b6lhqnx", {"alignment":"left","customValue":"Consultant Physician","desktopVisible":true,"...":"13 items not stringified"}) in 314ms src/app/admin/settings/actions.ts
+ POST /admin/hero-editor 200 in 928ms (next.js: 11ms, proxy.ts: 6ms, application-code: 911ms)
+  └─ ƒ updateHeroOverlayAdmin("cmtlzvxh00001czw7go30fnou", {"alignment":"right","customValue":null,"desktopVisible":true,"...":"13 items not stringified"}) in 307ms src/app/admin/settings/actions.ts
+ GET / 200 in 2.2s (next.js: 8ms, application-code: 2.2s)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?216:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?216:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?201:272:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?33:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?203:301:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?33:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?209:559:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?33:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?211:585:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?33:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?129:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?36:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?158:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?39:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?92:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?182:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?265:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?312:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?165:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?43:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:61:22) 
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /admin/login 200 in 729ms (next.js: 6ms, proxy.ts: 3ms, application-code: 720ms)
+ GET /api/auth/providers 200 in 18ms (next.js: 10ms, application-code: 7ms)
+ GET /api/auth/csrf 200 in 8ms (next.js: 3ms, application-code: 5ms)
+ POST /api/auth/callback/credentials? 200 in 802ms (next.js: 3ms, application-code: 799ms)
+ GET /admin 200 in 694ms (next.js: 11ms, proxy.ts: 7ms, application-code: 675ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?20:14:263) 
+ GET /admin/hero-editor 200 in 756ms (next.js: 5ms, proxy.ts: 3ms, application-code: 748ms)
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AdminLayout (http://localhost:3000/_next/static/chunks/_1dr0og3._.js:2454:237)
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?32:14:263) 
+ POST /api/admin/brand-settings 200 in 588ms (next.js: 3ms, application-code: 585ms)
+ POST /admin/hero-editor 200 in 913ms (next.js: 7ms, proxy.ts: 3ms, application-code: 903ms)
+  └─ ƒ updateHeroOverlayAdmin("cmtlzvx900000czw72b6lhqnx", {"alignment":"left","customValue":"Consultant Physician","desktopVisible":true,"...":"13 items not stringified"}) in 292ms src/app/admin/settings/actions.ts
+ POST /admin/hero-editor 200 in 974ms (next.js: 11ms, proxy.ts: 7ms, application-code: 955ms)
+  └─ ƒ updateHeroOverlayAdmin("cmtlzvxh00001czw7go30fnou", {"alignment":"right","customValue":null,"desktopVisible":true,"...":"13 items not stringified"}) in 337ms src/app/admin/settings/actions.ts
+ GET / 200 in 1971ms (next.js: 6ms, application-code: 1965ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?224:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?224:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?209:272:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?211:301:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?217:559:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?219:585:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?179:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?147:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?47:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?155:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?48:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?188:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?50:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?273:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?97:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?51:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /admin/hero-editor 200 in 730ms (next.js: 5ms, proxy.ts: 4ms, application-code: 721ms)
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AdminLayout (http://localhost:3000/_next/static/chunks/_1dr0og3._.js:2454:237)
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?32:14:263) 
+ GET /admin/hero-editor 200 in 755ms (next.js: 5ms, proxy.ts: 3ms, application-code: 747ms)
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AdminLayout (http://localhost:3000/_next/static/chunks/_1dr0og3._.js:2454:237)
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?32:14:263) 
+ POST /api/admin/brand-settings 200 in 598ms (next.js: 2ms, application-code: 595ms)
+ POST /admin/hero-editor 200 in 914ms (next.js: 7ms, proxy.ts: 4ms, application-code: 902ms)
+  └─ ƒ updateHeroOverlayAdmin("cmtlzvx900000czw72b6lhqnx", {"alignment":"left","customValue":"Consultant Physician","desktopVisible":true,"...":"13 items not stringified"}) in 293ms src/app/admin/settings/actions.ts
+ POST /admin/hero-editor 200 in 988ms (next.js: 11ms, proxy.ts: 7ms, application-code: 969ms)
+  └─ ƒ updateHeroOverlayAdmin("cmtlzvxh00001czw7go30fnou", {"alignment":"right","customValue":null,"desktopVisible":true,"...":"13 items not stringified"}) in 359ms src/app/admin/settings/actions.ts
+ GET / 200 in 1974ms (next.js: 4ms, application-code: 1969ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?224:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?224:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?209:272:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?39:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?211:301:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?39:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?217:559:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?39:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?219:585:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?39:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?172:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?145:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?45:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?119:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?46:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?204:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?48:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?273:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?82:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?49:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:61:22) 
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /admin/login 200 in 658ms (next.js: 4ms, proxy.ts: 2ms, application-code: 651ms)
+ GET /api/auth/providers 200 in 16ms (next.js: 10ms, application-code: 6ms)
+ GET /api/auth/csrf 200 in 8ms (next.js: 3ms, application-code: 5ms)
+ POST /api/auth/callback/credentials? 200 in 809ms (next.js: 3ms, application-code: 806ms)
+ GET /admin 200 in 651ms (next.js: 13ms, proxy.ts: 9ms, application-code: 629ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?20:14:263) 
+ GET /admin/hero-editor 200 in 746ms (next.js: 6ms, proxy.ts: 3ms, application-code: 737ms)
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AdminLayout (http://localhost:3000/_next/static/chunks/_1dr0og3._.js:2454:237)
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?32:14:263) 
+ POST /api/admin/brand-settings 200 in 578ms (next.js: 3ms, application-code: 575ms)
+ POST /admin/hero-editor 200 in 904ms (next.js: 7ms, proxy.ts: 3ms, application-code: 894ms)
+  └─ ƒ updateHeroOverlayAdmin("cmtlzvx900000czw72b6lhqnx", {"alignment":"left","customValue":"Consultant Physician","desktopVisible":true,"...":"13 items not stringified"}) in 292ms src/app/admin/settings/actions.ts
+ POST /admin/hero-editor 200 in 972ms (next.js: 11ms, proxy.ts: 6ms, application-code: 956ms)
+  └─ ƒ updateHeroOverlayAdmin("cmtlzvxh00001czw7go30fnou", {"alignment":"right","customValue":null,"desktopVisible":true,"...":"13 items not stringified"}) in 352ms src/app/admin/settings/actions.ts
+ GET / 200 in 1921ms (next.js: 5ms, application-code: 1915ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?226:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?226:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?205:272:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?207:301:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?213:559:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?215:585:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?174:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?177:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?47:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?151:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?48:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?186:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?50:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?275:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?86:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?51:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /admin/hero-editor 200 in 712ms (next.js: 5ms, proxy.ts: 2ms, application-code: 705ms)
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AdminLayout (http://localhost:3000/_next/static/chunks/_1dr0og3._.js:2454:237)
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?32:14:263) 
+ POST /api/admin/brand-settings 200 in 585ms (next.js: 3ms, application-code: 582ms)
+ POST /admin/hero-editor 200 in 910ms (next.js: 7ms, proxy.ts: 3ms, application-code: 900ms)
+  └─ ƒ updateHeroOverlayAdmin("cmtlzvx900000czw72b6lhqnx", {"alignment":"left","customValue":"Consultant Physician","desktopVisible":true,"...":"13 items not stringified"}) in 289ms src/app/admin/settings/actions.ts
+ POST /admin/hero-editor 200 in 988ms (next.js: 10ms, proxy.ts: 5ms, application-code: 972ms)
+  └─ ƒ updateHeroOverlayAdmin("cmtlzvxh00001czw7go30fnou", {"alignment":"right","customValue":null,"desktopVisible":true,"...":"13 items not stringified"}) in 354ms src/app/admin/settings/actions.ts
+ GET / 200 in 1889ms (next.js: 5ms, application-code: 1885ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?218:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?218:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?314:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?203:272:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?314:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?205:301:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?314:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?211:559:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?314:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?213:585:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?314:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?169:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?314:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?198:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?47:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?314:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?134:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?48:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?314:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?179:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?50:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?267:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?314:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?83:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?51:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /admin/login 200 in 697ms (next.js: 4ms, proxy.ts: 3ms, application-code: 689ms)
+ GET /api/auth/providers 200 in 16ms (next.js: 9ms, application-code: 7ms)
+ GET /api/auth/csrf 200 in 8ms (next.js: 3ms, application-code: 6ms)
+ POST /api/auth/callback/credentials? 200 in 802ms (next.js: 2ms, application-code: 799ms)
+ GET /admin 200 in 627ms (next.js: 12ms, proxy.ts: 7ms, application-code: 609ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?20:14:263) 
+ GET /admin/hero-editor 200 in 800ms (next.js: 5ms, proxy.ts: 3ms, application-code: 791ms)
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AdminLayout (http://localhost:3000/_next/static/chunks/_1dr0og3._.js:2454:237)
+    at Layout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5Csrc_08c8fls._.js?32:14:263) 
+ POST /api/admin/brand-settings 200 in 594ms (next.js: 3ms, application-code: 591ms)
+ POST /admin/hero-editor 200 in 955ms (next.js: 7ms, proxy.ts: 8ms, application-code: 941ms)
+  └─ ƒ updateHeroOverlayAdmin("cmtlzvx900000czw72b6lhqnx", {"alignment":"left","customValue":"Consultant Physician","desktopVisible":true,"...":"13 items not stringified"}) in 346ms src/app/admin/settings/actions.ts
+ POST /admin/hero-editor 200 in 932ms (next.js: 13ms, proxy.ts: 7ms, application-code: 912ms)
+  └─ ƒ updateHeroOverlayAdmin("cmtlzvxh00001czw7go30fnou", {"alignment":"right","customValue":null,"desktopVisible":true,"...":"13 items not stringified"}) in 297ms src/app/admin/settings/actions.ts
+ GET / 200 in 1978ms (next.js: 5ms, application-code: 1973ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?224:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?224:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?203:272:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?43:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?205:301:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?43:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?217:559:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?43:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?219:585:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?43:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?175:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?46:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?143:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?49:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?152:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?50:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?184:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?52:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?273:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?91:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?53:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+ GET / 200 in 1899ms (next.js: 5ms, application-code: 1894ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?126:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?126:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?215:272:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?217:301:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?223:559:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?225:585:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?182:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?185:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?47:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?133:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?48:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?194:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?50:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?271:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?318:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?80:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?51:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+ GET / 200 in 2.1s (next.js: 7ms, application-code: 2.1s)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?220:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?220:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?316:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?189:272:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?26:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?27:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?316:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?191:301:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?26:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?27:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?316:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?197:559:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?26:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?27:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?316:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?199:585:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?26:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?27:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?316:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?141:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?29:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?27:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?316:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?138:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?32:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?27:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?316:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?121:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?33:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?27:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?316:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?216:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?35:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?27:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?269:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?27:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?316:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?148:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?36:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?27:61:22) 
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET / 200 in 1864ms (next.js: 6ms, application-code: 1858ms)
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?224:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?224:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?203:272:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?35:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?205:301:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?35:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?211:559:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?35:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?213:585:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?34:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?35:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?175:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?37:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?35:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?172:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?40:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?35:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?143:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?35:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?184:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?43:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?35:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?273:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?35:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?86:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?35:61:22) 
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET / 200 in 1810ms (next.js: 6ms, application-code: 1804ms)
+[browser] Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RedirectErrorBoundary router={{...}}>
+      <InnerLayoutRouter url="/" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+        <SegmentViewNode type="layout" pagePath="(public)/l...">
+          <SegmentTrieNode>
+          <script>
+          <script>
+          <PublicLayout>
+            <style>
+            <MedicalCursor>
+            <ScrollProgress>
+            <Navbar navItems={[...]} siteName="Dr. Ayman ...">
+              <header className="fixed top-...">
+                <div className="container ...">
+                  <LinkComponent>
+                  <nav>
+                  <div className="hidden lg:...">
+                    <div className="relative">
+                      <button onClick={function onClick} className="h-8 w-8 in..." title="Theme">
+                        <Sun className="h-3.5 w-3.5">
+                          <svg
+                            ref={null}
+                            xmlns="http://www.w3.org/2000/svg"
+                            width={24}
+                            height={24}
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
++                           className="lucide lucide-sun h-3.5 w-3.5"
+-                           className="lucide lucide-monitor h-3.5 w-3.5"
+                            aria-hidden="true"
+                          >
++                           <circle cx="12" cy="12" r="4">
+-                           <rect width="20" height="14" x="2" y="3" rx="2">
+                            ...
+                    ...
+                  ...
+              ...
+            ...
+      ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at circle (<anonymous>)
+    at Array.map (<anonymous>)
+    at Navbar (src/components/public/layout/navbar.tsx:103:39)
+    at PublicLayout (src\app\(public)\layout.tsx:53:7)
+  101 |                 title="Theme"
+  102 |               >
+> 103 |                 {theme === "light" && <Sun className="h-3.5 w-3.5" />}
+      |                                       ^
+  104 |                 {theme === "dark" && <Moon className="h-3.5 w-3.5" />}
+  105 |                 {theme === "system" && <Monitor className="h-3.5 w-3.5" />}
+  106 |               </button>
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?228:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?228:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?324:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?207:272:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?43:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?324:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?209:301:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?43:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?324:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?215:559:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?43:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?324:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?217:585:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?43:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?324:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?170:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?46:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?324:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?162:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?49:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?324:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?122:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?50:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?324:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?186:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?52:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?277:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?324:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?89:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?53:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:61:22) 
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET / 200 in 1717ms (next.js: 4ms, application-code: 1713ms)
+[browser] Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RedirectErrorBoundary router={{...}}>
+      <InnerLayoutRouter url="/" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+        <SegmentViewNode type="layout" pagePath="(public)/l...">
+          <SegmentTrieNode>
+          <script>
+          <script>
+          <PublicLayout>
+            <style>
+            <MedicalCursor>
+            <ScrollProgress>
+            <Navbar navItems={[...]} siteName="Dr. Ayman ...">
+              <header className="fixed top-...">
+                <div className="container ...">
+                  <LinkComponent>
+                  <nav>
+                  <div className="hidden lg:...">
+                    <div className="relative">
+                      <button onClick={function onClick} className="h-8 w-8 in..." title="Theme">
+                        <Moon className="h-3.5 w-3.5">
+                          <svg
+                            ref={null}
+                            xmlns="http://www.w3.org/2000/svg"
+                            width={24}
+                            height={24}
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
++                           className="lucide lucide-moon h-3.5 w-3.5"
+-                           className="lucide lucide-monitor h-3.5 w-3.5"
+                            aria-hidden="true"
+                          >
++                           <path
++                             d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c...."
++                           >
+-                           <rect width="20" height="14" x="2" y="3" rx="2">
+                    ...
+                  ...
+              ...
+            ...
+      ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at path (<anonymous>)
+    at Array.map (<anonymous>)
+    at Navbar (src/components/public/layout/navbar.tsx:104:38)
+    at PublicLayout (src\app\(public)\layout.tsx:53:7)
+  102 |               >
+  103 |                 {theme === "light" && <Sun className="h-3.5 w-3.5" />}
+> 104 |                 {theme === "dark" && <Moon className="h-3.5 w-3.5" />}
+      |                                      ^
+  105 |                 {theme === "system" && <Monitor className="h-3.5 w-3.5" />}
+  106 |               </button>
+  107 |               {themeOpen && (
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:974:243)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?224:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at Navbar (http://localhost:3000/_next/static/chunks/src_components_1vb1u66._.js:1166:239)
+    at PublicLayout (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C_16emx8k._.js?224:460:264) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?209:272:288)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?211:301:296)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?217:559:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at Hero (about://React/Server/file:///D:/dr/.next/dev/server/chunks/ssr/%255Broot-of-the-server%255D__0y_5c3w._.js?id=%255Bproject%255D/src/components/public/home/hero.tsx+%255Bapp-rsc%255D+(ecmascript)?219:585:292)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?41:73:309)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ExperiencePreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?164:1443:298)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?44:85:326)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at PublicationsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?182:2863:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?47:106:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at AchievementsPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?168:335:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?48:113:317)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ArticlesPreview (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?190:576:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?50:120:313)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/src_0fuo618._.js:230:214)
+    at AiCtaSection (http://localhost:3000/_next/static/chunks/src_components_1khahxk._.js:116:259)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?273:134:311)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?320:3623:263)
+    at ContactSection (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?82:934:290)
+    at <anonymous> (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?51:141:316)
+    at Array.map (<anonymous>:1:18)
+    at HomePage (about://React/Server/D:%5Cdr%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0y_5c3w._.js?42:61:22) 
+[browser] Image with src "https://res.cloudinary.com/rsqokkve/image/upload/v1788462753/portfolio/hero-dr-ayman-rahman-cutout-b7p8x9.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET / 200 in 2.5s (next.js: 5ms, application-code: 2.5s)
