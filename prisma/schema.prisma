@@ -1,0 +1,697 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// --- Enums ---
+
+enum ThemeMode {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+  DRAFT
+}
+
+enum ContentStatus {
+  PUBLISHED
+  DRAFT
+  ARCHIVED
+}
+
+enum MessageStatus {
+  UNREAD
+  READ
+  ARCHIVED
+  IMPORTANT
+}
+
+enum MediaAssetStatus {
+  ACTIVE
+  TRASHED
+  MISSING
+}
+
+enum AiRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+enum KnowledgeSource {
+  PROFILE
+  EDUCATION
+  EXPERIENCE
+  QUALIFICATION
+  PUBLICATION
+  ACHIEVEMENT
+  ARTICLE
+  FAQ
+  CUSTOM
+}
+
+enum HomeSectionId {
+  HERO
+  INTRO
+  POSITION
+  EXPERIENCE_HIGHLIGHTS
+  EDUCATION_HIGHLIGHTS
+  QUALIFICATIONS
+  EXPERTISE
+  ACHIEVEMENTS
+  PUBLICATIONS
+  GALLERY
+  ARTICLES
+  AI_CTA
+  CONTACT_CTA
+  PROFESSIONAL_SPOTLIGHT
+}
+
+// --- Models ---
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  role          String    @default("OWNER") // OWNER, ADMIN, EDITOR
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Profile {
+  id                 String   @id @default(cuid())
+  fullName           String
+  displayName        String
+  profileImage       String?
+  coverImage         String?
+  professionalTitle  String
+  tagline            String?
+  shortBio           String?
+  fullBio            String?
+  currentDesignation String?
+  currentOrganization String?
+  location           String?
+  phone              String?
+  email              String?
+  website            String?
+  careerObjective    String?
+  philosophy         String?
+  quote              String?
+  resumeUrl          String?
+  isVisible          Boolean  @default(true)
+  allowAI             Boolean  @default(true)
+  updatedAt          DateTime @updatedAt
+
+  // Relations
+  education     Education[]
+  experience    Experience[]
+  qualifications Qualification[]
+  certifications Certification[]
+  interests     ProfessionalInterest[]
+  publications  Publication[]
+  achievements  Achievement[]
+}
+
+model BrandSettings {
+  id               String  @id @default(cuid())
+  siteName         String
+  logo             String?
+  favicon          String?
+  primaryColor     String  @default("#000000")
+  secondaryColor   String  @default("#ffffff")
+  accentColor      String  @default("#000000")
+  textColor        String  @default("#000000")
+  backgroundColor  String  @default("#ffffff")
+  surfaceColor     String  @default("#ffffff")
+  borderColor      String  @default("#e2e8f0")
+  borderRadiusButton String @default("0.5rem")
+  borderRadiusCard   String @default("0.75rem")
+  containerWidth    String @default("1280px")
+  baseFont          String @default("Inter")
+  headingFont       String @default("Inter")
+  headingWeight     String @default("700")
+  sectionSpacing    String @default("4rem")
+  // Typography
+  baseFontSize      String  @default("16px")
+  navFontSize       String  @default("14px")
+  headingScale      String  @default("1.25")
+  typographyPreset  String  @default("balanced")
+  // Hero
+  heroBadgeText     String  @default("Currently Practicing")
+  heroShowBadge     Boolean @default(true)
+  heroPrimaryCtaLabel   String  @default("Profile")
+  heroPrimaryCtaDest    String  @default("/about")
+  heroSecondaryCtaLabel String  @default("Connect")
+  heroSecondaryCtaDest  String  @default("/contact")
+  heroShowCvCta     Boolean @default(false)
+  heroCvCtaLabel    String  @default("View CV")
+  heroShowWorkplace Boolean @default(true)
+  heroShowLocation  Boolean @default(true)
+  heroShowQualifications Boolean @default(true)
+  heroShowInterests Boolean @default(false)
+  // Hero Portrait
+  profileImage     String?
+  portraitScale     String  @default("1")
+  portraitX         String  @default("0")
+  portraitY         String  @default("0")
+  portraitMaxHeight String  @default("500px")
+  portraitFit       String  @default("contain")
+  portraitFocalX    String  @default("50")
+  portraitFocalY    String  @default("50")
+  // Hero Visual
+  heroBackground    String  @default("grid")
+  heroOverlayStyle  String  @default("glass")
+  heroMobileLayout  String  @default("portrait-first")
+  heroMobilePortraitHeight String @default("balanced")
+  // Footer
+  footerNavTitle    String  @default("Navigation")
+  footerContactTitle String @default("Connect")
+  footerDescription String?
+  updatedAt        DateTime @updatedAt
+}
+
+model ThemeSettings {
+  id               String    @id @default(cuid())
+  currentTheme     ThemeMode @default(SYSTEM)
+  presetName       String?
+  isManualOverride Boolean   @default(false)
+  updatedAt        DateTime  @updatedAt
+}
+
+model SiteSettings {
+  id                   String  @id @default(cuid())
+  siteUrl              String?
+  siteTitle            String?
+  siteDescription      String?
+  defaultLanguage      String  @default("en")
+  timezone             String  @default("UTC")
+  contactVisibility    Boolean @default(true)
+  analyticsId          String?
+  aiEnabled            Boolean @default(true)
+  galleryEnabled       Boolean @default(true)
+  galleryLabel         String   @default("Gallery")
+  blogEnabled          Boolean @default(true)
+  maintenanceMode      Boolean @default(false)
+  footerText           String?
+  copyrightText        String?
+  showLocalInfo        Boolean @default(false)
+  showAgencyBranding   Boolean @default(false)
+  agencyName           String  @default("AS")
+  agencyUrl            String?
+  agencyLabel          String  @default("Designed & Developed by")
+  showDemoBadge        Boolean @default(false)
+  motionLevel          String  @default("subtle")
+  cursorReactiveEffect Boolean @default(true)
+  cursorMode          String  @default("normal")
+  heroOverlayEntrance  Boolean @default(true)
+  connectCue           Boolean @default(true)
+  connectCueStyle      String  @default("hand-tap")
+  updatedAt            DateTime @updatedAt
+}
+
+model HomeSection {
+  id           String        @id @default(cuid())
+  sectionId    HomeSectionId
+  label        String?
+  eyebrow      String?
+  heading      String?
+  supportingText String?
+  sectionNumber String?
+  showSectionNumber Boolean @default(true)
+  isVisible    Boolean       @default(true)
+  sortOrder    Int           @default(0)
+  layoutVariant String?
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([sectionId])
+}
+
+model Education {
+  id                String   @id @default(cuid())
+  degree            String
+  institution       String
+  department        String?
+  field             String?
+  startDate         DateTime
+  endDate           DateTime?
+  result            String?
+  description       String?
+  institutionUrl    String?
+  institutionLogo   String?
+  certificateUrl    String?
+  isVisible         Boolean  @default(true)
+  isFeatured        Boolean  @default(false)
+  sortOrder         Int      @default(0)
+  profileId         String
+  profile           Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Experience {
+  id                String   @id @default(cuid())
+  jobTitle          String
+  organization      String
+  location          String?
+  startDate         DateTime
+  endDate           DateTime?
+  isCurrent         Boolean  @default(false)
+  description       String?
+  responsibilities  String?
+  achievements      String?
+  organizationUrl   String?
+  logo              String?
+  isVisible         Boolean  @default(true)
+  isFeatured        Boolean  @default(false)
+  sortOrder         Int      @default(0)
+  profileId         String
+  profile           Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Qualification {
+  id                String   @id @default(cuid())
+  title             String
+  institution       String?
+  issuingOrganization String?
+  credential        String?
+  issueDate         DateTime
+  expiryDate        DateTime?
+  description       String?
+  credentialUrl    String?
+  certificateImage  String?
+  isVisible         Boolean  @default(true)
+  isFeatured        Boolean  @default(false)
+  sortOrder         Int      @default(0)
+  profileId         String
+  profile           Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Certification {
+  id                String   @id @default(cuid())
+  title             String
+  institution       String?
+  issuingOrganization String?
+  credential        String?
+  issueDate         DateTime
+  expiryDate        DateTime?
+  description       String?
+  credentialUrl    String?
+  certificateImage  String?
+  isVisible         Boolean  @default(true)
+  isFeatured        Boolean  @default(false)
+  sortOrder         Int      @default(0)
+  profileId         String
+  profile           Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model ProfessionalInterest {
+  id                String   @id @default(cuid())
+  title             String
+  icon              String?
+  shortDescription String?
+  fullDescription   String?
+  image             String?
+  isVisible         Boolean  @default(true)
+  isFeatured        Boolean  @default(false)
+  sortOrder         Int      @default(0)
+  profileId         String
+  profile           Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Publication {
+  id                String   @id @default(cuid())
+  title             String
+  slug              String   @unique
+  authors           String
+  journal          String?
+  conference        String?
+  publisher         String?
+  publicationDate   DateTime
+  abstract          String?
+  doi               String?
+  citation          String?
+  externalUrl       String?
+  pdfUrl            String?
+  coverImage        String?
+  isVisible         Boolean  @default(true)
+  isFeatured        Boolean  @default(false)
+  isPublished       Boolean  @default(true)
+  sortOrder         Int      @default(0)
+  profileId         String
+  profile           Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Achievement {
+  id                String   @id @default(cuid())
+  title             String
+  awardingOrganization String?
+  date              DateTime
+  description       String?
+  image             String?
+  certificateUrl    String?
+  externalUrl       String?
+  isVisible         Boolean  @default(true)
+  isFeatured        Boolean  @default(false)
+  sortOrder         Int      @default(0)
+  profileId         String
+  profile           Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Article {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  excerpt         String?
+  content         String   @db.Text
+  coverImage      String?
+  readingTime     Int?
+  isDraft         Boolean  @default(true)
+  isPublished     Boolean  @default(false)
+  isFeatured      Boolean  @default(false)
+  publishDate     DateTime @default(now())
+  seoTitle        String?
+  seoDescription  String?
+  canonicalUrl    String?
+  ogImage         String?
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  categories     ArticleCategory[]
+  tags           ArticleTag[]
+}
+
+model ArticleCategory {
+  id    String  @id @default(cuid())
+  name  String  @unique
+  slug  String  @unique
+  articles Article[]
+}
+
+model ArticleTag {
+  id    String  @id @default(cuid())
+  name  String  @unique
+  slug  String  @unique
+  articles Article[]
+}
+
+model GalleryItem {
+  id             String   @id @default(cuid())
+  mediaAssetId   String
+  mediaAsset     MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+  caption        String?
+  category       String?
+  isVisible      Boolean  @default(true)
+  isFeatured     Boolean  @default(false)
+  captureDate    DateTime?
+  location       String?
+  sortOrder      Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model GalleryCategory {
+  id    String @id @default(cuid())
+  name  String @unique
+  slug  String @unique
+}
+
+model SocialLink {
+  id         String   @id @default(cuid())
+  platform   String
+  label      String
+  url        String
+  icon       String?
+  iconKey    String?
+  hoverColor String?
+  isVisible  Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  updatedAt  DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String        @db.Text
+  status    MessageStatus @default(UNREAD)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model Faq {
+  id          String   @id @default(cuid())
+  question    String
+  answer      String   @db.Text
+  category    String?
+  isVisible   Boolean   @default(true)
+  allowAI     Boolean   @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MediaAsset {
+  id               String   @id @default(cuid())
+  publicId         String   @unique
+  secureUrl        String
+  originalFilename String?
+  displayName      String?
+  purpose          String   @default("GENERAL") // GENERAL, HERO, PROFILE, GALLERY, ARTICLE
+  status           MediaAssetStatus @default(ACTIVE)
+  trashedAt        DateTime?
+  missingDetectedAt DateTime?
+  width            Int?
+  height           Int?
+  format           String?
+  resourceType     String?
+  altText          String?
+  folder           String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  galleryItems GalleryItem[]
+}
+
+model NavigationItem {
+  id          String   @id @default(cuid())
+  label       String
+  destination String
+  isVisible   Boolean  @default(true)
+  isExternal  Boolean  @default(false)
+  icon        String?
+  desktopVisible Boolean @default(true)
+  mobileVisible  Boolean @default(true)
+  sortOrder   Int      @default(0)
+  updatedAt    DateTime @updatedAt
+}
+
+model SeoSettings {
+  id               String   @id @default(cuid())
+  templateTitle    String   @default("{displayName} | {professionalTitle}")
+  templateDescription String @default("Professional portfolio of {displayName}, {professionalTitle}.")
+  ogImage          String?
+  twitterHandle    String?
+  updatedAt        DateTime @updatedAt
+}
+
+model AiSettings {
+  id               String   @id @default(cuid())
+  enabled          Boolean  @default(true)
+  assistantName    String   @default("Assistant")
+  assistantAvatar  String?
+  welcomeMessage   String?
+  systemInstruction String?  @db.Text
+  temperature      Float    @default(0.7)
+  maxTokens        Int      @default(1000)
+  rateLimit        Int      @default(100)
+  updatedAt        DateTime @updatedAt
+}
+
+model AiKnowledgeItem {
+  id          String          @id @default(cuid())
+  content     String          @db.Text
+  sourceType  KnowledgeSource
+  isVisible   Boolean         @default(true)
+  allowAI     Boolean         @default(true)
+  lastUpdated DateTime        @updatedAt
+}
+
+model AiConversation {
+  id        String    @id @default(cuid())
+  userId    String?   // Visitor ID
+  startedAt DateTime  @default(now())
+  messages  AiMessage[]
+}
+
+model AiMessage {
+  id             String   @id @default(cuid())
+  conversationId String
+  conversation   AiConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           AiRole
+  content         String   @db.Text
+  createdAt      DateTime @default(now())
+}
+
+model CvDocument {
+  id          String   @id @default(cuid())
+  title       String
+  fileUrl     String
+  versionDate DateTime
+  isVisible   Boolean  @default(true)
+  isCurrent   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model HighlightMetric {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  isVisible   Boolean  @default(true)
+  label       String
+  icon        String?
+  sortOrder   Int      @default(0)
+  valueMode   String   @default("AUTO")
+  manualValue String?
+  updatedAt   DateTime @updatedAt
+}
+
+model HeroOverlay {
+  id              String   @id @default(cuid())
+  key             String   @unique
+  label           String
+  valueType       String   @default("AUTO")
+  customValue     String?
+  valueSource     String?
+  isVisible       Boolean  @default(true)
+  desktopVisible  Boolean  @default(true)
+  mobileVisible   Boolean  @default(true)
+  desktopX        Float    @default(50)
+  desktopY        Float    @default(50)
+  mobileX         Float    @default(50)
+  mobileY         Float    @default(50)
+  width           String   @default("160px")
+  alignment       String   @default("left")
+  opacity         Float    @default(1)
+  styleVariant    String   @default("glass")
+  sortOrder       Int      @default(0)
+  updatedAt       DateTime @updatedAt
+}
+
+model FooterTreatment {
+  id          String   @id @default(cuid())
+  name        String
+  url         String?
+  sortOrder   Int      @default(0)
+  isVisible   Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+}
+
+model FooterLocation {
+  id              String   @id @default(cuid())
+  title           String
+  hospitalName    String?
+  address         String?
+  visitingDays    String?
+  visitingHours   String?
+  appointmentPhone String?
+  mapsUrl         String?
+  mapsEmbedUrl    String?
+  icon            String?
+  ctaLabel        String?
+  isPrimary       Boolean  @default(false)
+  sortOrder       Int      @default(0)
+  isVisible       Boolean  @default(true)
+  updatedAt       DateTime @updatedAt
+}
+
+model FooterSetting {
+  id                     String  @id @default(cuid())
+  profileEnabled         Boolean @default(true)
+  profileImage           String?
+  profileName            String?
+  profileTitle           String?
+  profileBio             String?
+  useMainProfile         Boolean @default(true)
+  navigationEnabled      Boolean @default(true)
+  treatmentsEnabled      Boolean @default(true)
+  locationsEnabled       Boolean @default(true)
+  socialLinksEnabled     Boolean @default(true)
+  copyrightText          String?
+  brandText              String  @default("Aptic")
+  chamberSectionEyebrow  String?
+  chamberSectionHeading  String?
+  chamberSectionSupport  String?
+  updatedAt              DateTime @updatedAt
+}
+
+model HomeSpotlightSetting {
+  id                       String  @id @default(cuid())
+  eyebrow                  String  @default("Professional Spotlight")
+  heading                  String  @default("Trusted Clinical Care Built on Experience and Compassion")
+  supportingText           String  @default("A dedicated medical professional committed to providing exceptional patient care through evidence-based practice and compassionate leadership.")
+  primaryCtaLabel          String  @default("Schedule an Appointment")
+  primaryCtaDestination    String  @default("/contact")
+  primaryCtaVisible        Boolean @default(true)
+  secondaryCtaLabel        String  @default("View Profile")
+  secondaryCtaDestination  String  @default("/about")
+  secondaryCtaVisible      Boolean @default(false)
+  backgroundImage          String?
+  backgroundOverlayStrength Float  @default(0.82)
+  collageStyle             String  @default("freeform")
+  frameStyle               String  @default("editorial")
+  collageHeight            String  @default("auto")
+  updatedAt                DateTime @updatedAt
+}
+
+model HomeSpotlightImage {
+  id          String   @id @default(cuid())
+  mediaUrl    String?
+  altText     String?
+  caption     String?
+  isVisible   Boolean  @default(true)
+  isLocked    Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  rotation    Float    @default(0)
+  sizeVariant String  @default("normal")
+  frameWidth  String   @default("auto")
+  frameHeight String   @default("auto")
+  offsetX     String   @default("0")
+  offsetY     String   @default("0")
+  xPercent    Float   @default(0)
+  yPercent    Float   @default(0)
+  widthPercent Float  @default(45)
+  heightPercent Float @default(63)
+  zIndex      Int     @default(0)
+  framePreset String  @default("editorial")
+  shadowPreset String @default("soft")
+  mobileXPercent     Float?
+  mobileYPercent     Float?
+  mobileWidthPercent Float?
+  mobileHeightPercent Float?
+  mobileRotation     Float?
+  updatedAt   DateTime @updatedAt
+}

@@ -1,36 +1,144 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Professional Portfolio Platform
+
+A production-ready, white-label, AI-enabled professional portfolio platform built with Next.js 16, Prisma, PostgreSQL, Cloudinary, and shadcn/ui.
+
+## Tech Stack
+
+- **Framework**: Next.js 16.3.3 (Turbopack)
+- **UI**: React 19, Tailwind CSS v4, shadcn/ui v4 (base-ui)
+- **Database**: PostgreSQL + Prisma ORM
+- **Auth**: NextAuth v5 (beta)
+- **Storage**: Cloudinary
+- **AI**: OpenAI / Anthropic (provider-agnostic)
+- **Validation**: Zod v4
+
+## Features
+
+### Public Pages
+- Hero, About, Education, Experience, Qualifications
+- Publications, Articles (Blog), Gallery, Contact
+- Dynamic sitemap, robots.txt, JSON-LD metadata
+- Floating AI assistant with conversation history
+
+### Admin Dashboard
+- Profile management (white-label, data-driven identity)
+- Content CRUD: education, experience, publications, achievements, qualifications
+- Blog CMS with categories, tags, and rich content
+- Gallery with reorder and visibility control
+- Media manager with Cloudinary integration
+- Message management (read/unread, important, archive)
+- AI assistant settings (enable/disable, model, temperature, greeting)
+- SEO settings (meta templates, sitemap, OG images)
+- Theme & branding (presets, custom colors, logo, layout)
+- Appearance settings (5 presets: Professional Blue, Executive Dark, Minimal Neutral, Elegant Slate, Clean)
+
+### Architecture
+- AI knowledge architecture (builds context from all content)
+- Rate limiting on contact form and AI chat
+- Provider abstraction for AI services
+- Shared Prisma singleton (`src/lib/db.ts`)
+- Server components by default, client components only when needed
+- Build-time graceful fallback when database is unavailable
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+
+- PostgreSQL
+- Cloudinary account
+- AI provider API key (OpenAI or Anthropic)
+
+### Setup
 
 ```bash
+# Install dependencies
+npm install
+
+# Set up environment
+cp .env.example .env
+# Edit .env with your credentials
+
+# Push database schema
+npm run db:push
+
+# Seed admin user + default settings
+npm run db:seed
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+See `.env.example` for the full list. Key variables:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `AUTH_SECRET` | NextAuth secret (generate with `openssl rand -base64 32`) |
+| `ADMIN_EMAIL` | Admin login email (default: `admin@portfolio.com`) |
+| `ADMIN_PASSWORD` | Admin login password (default: `admin123`) |
+| `CLOUDINARY_*` | Cloudinary credentials (see below) |
+| `AI_PROVIDER` | `openai` or `anthropic` |
+| `AI_API_KEY` | Your AI provider API key |
 
-## Learn More
+> **Note**: Cloudinary server-side keys (`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`) are never exposed to the client. Client-side keys (`NEXT_PUBLIC_*`) are safe for browser use.
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment to Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Push your repo to GitHub
+2. Import the project in [Vercel](https://vercel.com)
+3. Set environment variables in Vercel dashboard:
+   - `DATABASE_URL` (use a hosted PostgreSQL like Neon, Supabase, or Vercel Postgres)
+   - `AUTH_SECRET` (generate with `openssl rand -base64 32`)
+   - `CLOUDINARY_*` credentials
+   - `AI_PROVIDER` and `AI_API_KEY`
+   - `ADMIN_EMAIL` and `ADMIN_PASSWORD`
+4. Add a build step: `npx prisma generate` (Vercel may auto-detect this)
+5. Vercel will auto-detect Next.js and deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Build succeeds without a database connection — all pages gracefully fall back to empty state at build time.
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+  app/
+    (public)/          # Public-facing pages
+    admin/             # Admin dashboard pages
+    api/               # API routes
+    layout.tsx         # Root layout with ThemeProvider, AI, SEO
+    page.tsx           # Homepage with dynamic sections
+    sitemap.ts         # Dynamic sitemap
+    robots.ts          # Robots.txt
+  components/
+    admin/             # Admin-specific components (media picker, uploader)
+    public/            # Public UI components
+    shared/            # Shared components (theme provider, toaster)
+    ui/                # shadcn/ui components (base-ui)
+  lib/
+    auth/              # NextAuth v5 configuration
+    db.ts              # Prisma singleton
+    seo/               # SEO service
+    validators/        # Zod schemas for form validation
+  services/            # Business logic (profile, content, media, settings, ai)
+  repositories/        # Data access layer (Prisma queries)
+  proxy.ts             # Auth proxy (middleware replacement for Next.js 16)
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Available Scripts
+
+| Script | Description |
+|---|---|
+| `npm run dev` | Start development server with Turbopack |
+| `npm run build` | Production build |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm run db:push` | Push schema changes to database |
+| `npm run db:seed` | Seed admin user and default settings |
+| `npm run db:migrate` | Run Prisma migrations |
+| `npm run db:generate` | Generate Prisma client |
+
+## License
+
+Private - All rights reserved.
