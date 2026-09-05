@@ -64,7 +64,9 @@ export default async function PublicLayout({
       {aiSettings?.enabled && (
         <AiAssistant
           assistantName={aiSettings.assistantName}
+          assistantAvatar={aiSettings.assistantAvatar}
           welcomeMessage={aiSettings.welcomeMessage ?? undefined}
+          statusText={aiSettings.statusText || "Online"}
         />
       )}
       <MobileBottomDock navItems={navItems} />

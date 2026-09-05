@@ -53,7 +53,7 @@ export async function exportFullBackup() {
     articleTags, galleryItems, galleryCategories, mediaAssets,
     cvDocuments, socialLinks, navigationItems, homeSections,
     highlightMetrics, heroOverlays, brandSettings, themeSettings,
-    siteSettings, seoSettings, aiSettings, aiKnowledgeItems,
+    siteSettings, seoSettings,     aiSettings, aiKnowledgeItems, aiAssistantKnowledge,
     faqs, contactMessages,
   ] = await Promise.all([
     prisma.profile.findFirst(),
@@ -82,6 +82,7 @@ export async function exportFullBackup() {
     prisma.seoSettings.findFirst(),
     prisma.aiSettings.findFirst(),
     prisma.aiKnowledgeItem.findMany(),
+    prisma.aiAssistantKnowledge.findMany(),
     prisma.faq.findMany(),
     prisma.contactMessage.findMany(),
   ])
@@ -148,6 +149,7 @@ export async function exportFullBackup() {
     seoSettings,
     aiSettings,
     aiKnowledgeItems,
+    aiAssistantKnowledge,
     faqs,
     contactMessages,
   }
@@ -177,6 +179,7 @@ export async function exportFullBackup() {
       highlightMetrics: highlightMetrics.length,
       heroOverlays: heroOverlays.length,
       aiKnowledgeItems: aiKnowledgeItems.length,
+      aiAssistantKnowledge: aiAssistantKnowledge.length,
       faqs: faqs.length,
       contactMessages: contactMessages.length,
     },
@@ -273,6 +276,7 @@ export async function restoreFullBackup(backupBase64: string, mode: "replace" | 
       // Clear existing data (preserve User)
       await tx.faq.deleteMany()
       await tx.aiKnowledgeItem.deleteMany()
+      await tx.aiAssistantKnowledge.deleteMany()
       await tx.contactMessage.deleteMany()
       await tx.highlightMetric.deleteMany()
       await tx.homeSection.deleteMany()
@@ -402,6 +406,7 @@ export async function restoreFullBackup(backupBase64: string, mode: "replace" | 
       if (database.galleryItems?.length) await tx.galleryItem.createMany({ data: database.galleryItems })
       if (database.cvDocuments?.length) await tx.cvDocument.createMany({ data: database.cvDocuments })
       if (database.aiKnowledgeItems?.length) await tx.aiKnowledgeItem.createMany({ data: database.aiKnowledgeItems })
+      if (database.aiAssistantKnowledge?.length) await tx.aiAssistantKnowledge.createMany({ data: database.aiAssistantKnowledge })
       if (database.faqs?.length) await tx.faq.createMany({ data: database.faqs })
       if (database.contactMessages?.length) await tx.contactMessage.createMany({ data: database.contactMessages })
 

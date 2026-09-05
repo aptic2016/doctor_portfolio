@@ -8,13 +8,13 @@ import { PublicationsPreview } from "@/components/public/home/publications-previ
 import { AchievementsPreview } from "@/components/public/home/achievements-preview"
 import { ArticlesPreview } from "@/components/public/home/articles-preview"
 import { GalleryPreview } from "@/components/public/home/gallery-preview"
-import { AiCtaSection } from "@/components/public/home/ai-cta-section"
 import { ContactSection } from "@/components/public/home/contact-section"
 import { ChambersSection } from "@/components/public/home/chambers-section"
 import { SpotlightSection } from "@/components/public/home/spotlight-section"
+import type { HomeSectionConfig } from "@/components/public/home/visuals/section-visual"
 
 export default async function HomePage() {
-  let sections: { sectionId: string; isVisible: boolean; sortOrder: number; eyebrow?: string | null; heading?: string | null; supportingText?: string | null; sectionNumber?: string | null; showSectionNumber?: boolean }[] = []
+  let sections: (HomeSectionConfig & { sectionId: string; isVisible: boolean; sortOrder: number })[] = []
   let spotlightSetting = null
   let spotlightImages: { id: string; mediaUrl: string | null; altText: string | null; caption: string | null; isVisible: boolean; isLocked: boolean; sortOrder: number; rotation: number; sizeVariant: string; frameWidth: string; frameHeight: string; offsetX: string; offsetY: string; xPercent: number; yPercent: number; widthPercent: number; heightPercent: number; zIndex: number; framePreset: string; shadowPreset: string; mobileXPercent: number | null; mobileYPercent: number | null; mobileWidthPercent: number | null; mobileHeightPercent: number | null; mobileRotation: number | null }[] = []
 
@@ -44,7 +44,6 @@ export default async function HomePage() {
         if (section.sectionId === "ACHIEVEMENTS") return <AchievementsPreview key={section.sectionId} section={section} />
         if (section.sectionId === "ARTICLES") return <ArticlesPreview key={section.sectionId} section={section} />
         if (section.sectionId === "GALLERY") return <GalleryPreview key={section.sectionId} section={section} />
-        if (section.sectionId === "AI_CTA") return <AiCtaSection key={section.sectionId} section={section} />
         if (section.sectionId === "CONTACT_CTA") return <ContactSection key={section.sectionId} section={section} />
         return null
       })}

@@ -593,12 +593,14 @@ Institutions can measure communication quality through patient satisfaction surv
   },
   aiSettings: {
     enabled: true,
-    assistantName: "Dr. Rahman's Assistant",
-    welcomeMessage: "Hello! I'm an AI assistant with knowledge of Dr. Ayman Rahman's clinical practice and professional background. How can I help you learn about his work in internal medicine and clinical education?",
-    systemInstruction: "You are a helpful AI assistant for Dr. Ayman Rahman's medical portfolio. Answer questions about Dr. Rahman's clinical practice, publications, and expertise in internal medicine, evidence-based practice, preventive healthcare, and medical education. Be professional, knowledgeable, and engaging. If you don't know something specific, you can speak generally about the topics Dr. Rahman works on. Do not provide personal medical advice ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â direct users to seek consultation with their own healthcare provider.",
+    assistantName: "Assistant",
+    welcomeMessage: "",
+    statusText: "Online",
+    systemInstruction: "",
     temperature: 0.7,
     maxTokens: 1000,
     rateLimit: 100,
+    doctorOnlyScope: true,
   },
   navigationItems: [
     { label: "Home", destination: "/", isVisible: true, isExternal: false, sortOrder: 0, desktopVisible: true, mobileVisible: true },

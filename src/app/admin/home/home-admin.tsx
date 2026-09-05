@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Eye, EyeOff, ArrowRight, LayoutGrid, BarChart3, Palette } from "lucide-react"
+import { SectionVisualsPanel } from "./section-visuals-panel"
 
 interface Section {
   id: string
@@ -16,6 +17,10 @@ interface Section {
   heading: string | null
   sectionNumber: string | null
   showSectionNumber: boolean
+  mediaUrl: string | null
+  mediaAltText: string | null
+  mediaPosition: string
+  showMedia: boolean
 }
 
 interface Brand {
@@ -157,6 +162,9 @@ export function HomeAdmin({
           </div>
         </CardContent>
       </Card>
+
+      {/* Editorial images for the three visual home sections */}
+      <SectionVisualsPanel sections={sections} />
 
       {/* Quick Links */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

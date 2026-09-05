@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db"
 import { auth } from "@/lib/auth/auth"
 import { revalidatePath } from "next/cache"
 import { SPOTLIGHT_LOCAL_ID_PREFIX } from "@/components/shared/spotlight/stage"
+import { isMediaPosition } from "@/components/public/home/visuals/section-visual"
 
 async function requireAdmin() {
   const session = await auth()
@@ -80,6 +81,60 @@ export async function updateHomeSectionAdmin(id: string, data: {
 }) {
   await requireAdmin()
   const section = await prisma.homeSection.update({ where: { id }, data })
+  revalidatePath("/admin/home-sections")
+  revalidatePath("/")
+  return section
+}
+
+/**
+ * Editorial section visual — Professional Journey / Education / Achievements.
+ *
+ * Deliberately separate from `updateHomeSectionAdmin` so the copy fields and the
+ * visual fields can never overwrite one another, and so the two values that end
+ * up in the public DOM are validated server-side: the URL must be a Cloudinary
+ * https URL (the only host `next/image` is configured for), and the focal point
+ * must be one of the closed `MEDIA_POSITIONS` set, since it is applied as an
+ * inline `object-position`.
+ */
+export async function updateHomeSectionVisualAdmin(id: string, data: {
+  mediaUrl?: string | null; mediaAltText?: string | null; mediaPosition?: string; showMedia?: boolean;
+}) {
+  await requireAdmin()
+
+  const update: { mediaUrl?: string | null; mediaAltText?: string | null; mediaPosition?: string; showMedia?: boolean } = {}
+
+  if (data.mediaUrl !== undefined) {
+    const raw = data.mediaUrl?.trim()
+    if (!raw) {
+      update.mediaUrl = null
+    } else {
+      let parsed: URL
+      try {
+        parsed = new URL(raw)
+      } catch {
+        throw new Error("Invalid image URL")
+      }
+      if (parsed.protocol !== "https:" || parsed.hostname !== "res.cloudinary.com") {
+        throw new Error("Only Cloudinary media URLs are allowed")
+      }
+      update.mediaUrl = raw
+    }
+  }
+
+  if (data.mediaAltText !== undefined) {
+    const alt = data.mediaAltText?.trim()
+    update.mediaAltText = alt ? alt.slice(0, 300) : null
+  }
+
+  if (data.mediaPosition !== undefined) {
+    if (!isMediaPosition(data.mediaPosition)) throw new Error("Invalid image focal position")
+    update.mediaPosition = data.mediaPosition
+  }
+
+  if (data.showMedia !== undefined) update.showMedia = data.showMedia
+
+  const section = await prisma.homeSection.update({ where: { id }, data: update })
+  revalidatePath("/admin/home")
   revalidatePath("/admin/home-sections")
   revalidatePath("/")
   return section

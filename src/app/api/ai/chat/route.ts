@@ -10,6 +10,8 @@ const chatSchema = z.object({
       content: z.string().max(2000),
     })
   ).min(1).max(20),
+  visitorName: z.string().min(1).max(100).optional(),
+  visitorPhone: z.string().max(20).optional(),
 })
 
 const rateLimitMap = new Map<string, { count: number; lastReset: number }>()
@@ -58,16 +60,36 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { conversationId, messages } = result.data
+    const { conversationId, messages, visitorName, visitorPhone } = result.data
 
-    const response = await aiService.chat(conversationId || null, messages)
+    if (!conversationId && !visitorName) {
+      return NextResponse.json(
+        { error: "visitorName is required for new conversations" },
+        { status: 400 }
+      )
+    }
+
+    const response = await aiService.chat({
+      conversationId: conversationId || null,
+      messages,
+      visitorName,
+      visitorPhone,
+    })
 
     return NextResponse.json(response)
   } catch (error: unknown) {
     console.error("AI chat error:", error)
     const message = error instanceof Error ? error.message : "Failed to process your request"
+
+    if (message.includes("not configured") || message.includes("API key")) {
+      return NextResponse.json(
+        { error: "The assistant is temporarily unavailable. Please try again later." },
+        { status: 503 }
+      )
+    }
+
     return NextResponse.json(
-      { error: message },
+      { error: "The assistant is temporarily unavailable. Please try again later." },
       { status: 500 }
     )
   }

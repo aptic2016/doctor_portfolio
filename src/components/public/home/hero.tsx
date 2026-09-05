@@ -61,11 +61,11 @@ export async function Hero() {
   }
 
   return (
-    <section className="relative min-h-[50vh] lg:min-h-[60vh] overflow-hidden">
+    <section className="relative min-h-[50vh] lg:min-h-[60vh]">
       {/* ===== MOBILE: Portrait-first (app-like) ===== */}
       <div className="lg:hidden flex flex-col">
         {/* Portrait area */}
-        <div className="relative h-[420px] w-full shrink-0 overflow-visible">
+        <div className="relative aspect-[4/5] w-full shrink-0 overflow-visible">
           <div className="absolute inset-0 medical-grid opacity-40" />
           {brand?.profileImage ? (
             <Image

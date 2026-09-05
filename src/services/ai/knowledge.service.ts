@@ -147,6 +147,15 @@ export class KnowledgeService {
       sections.push(`[${item.sourceType}]: ${item.content}`)
     }
 
+    const assistantKnowledge = await prisma.aiAssistantKnowledge.findMany({
+      where: { isEnabled: true },
+      orderBy: { sortOrder: "asc" },
+    })
+    if (assistantKnowledge.length > 0) {
+      const akList = assistantKnowledge.map((ak) => `[${ak.category}] ${ak.title}: ${ak.content}`)
+      sections.push(`Assistant Knowledge:\n${akList.join("\n")}`)
+    }
+
     return sections.join("\n\n")
   }
 
