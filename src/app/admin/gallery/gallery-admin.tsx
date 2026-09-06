@@ -65,8 +65,10 @@ interface GalleryItemWithAsset {
   } | null
 }
 
-export function GalleryAdmin({ initialData }: { initialData: GalleryItemWithAsset[] }) {
+export function GalleryAdmin({ initialData, initialHomeLimit }: { initialData: GalleryItemWithAsset[]; initialHomeLimit?: number }) {
   const [data, setData] = useState<GalleryItemWithAsset[]>(initialData)
+  const [homeLimit, setHomeLimit] = useState(initialHomeLimit ?? 6)
+  const [isSavingHomeLimit, setIsSavingHomeLimit] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>("")
@@ -175,6 +177,22 @@ export function GalleryAdmin({ initialData }: { initialData: GalleryItemWithAsse
 
   const categories = [...new Set(data.map((item) => item.category).filter(Boolean))]
 
+  const saveHomeLimit = async () => {
+    setIsSavingHomeLimit(true)
+    try {
+      await fetch("/api/admin/site-settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ galleryHomeLimit: homeLimit }),
+      })
+      toast.success("Home preview limit saved")
+    } catch {
+      toast.error("Failed to save")
+    } finally {
+      setIsSavingHomeLimit(false)
+    }
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
@@ -188,6 +206,28 @@ export function GalleryAdmin({ initialData }: { initialData: GalleryItemWithAsse
           <Plus className="h-4 w-4 mr-2" /> Add Image
         </Button>
       </div>
+
+      <Card>
+        <CardContent className="pt-6 space-y-4">
+          <h3 className="text-sm font-semibold">Home Preview</h3>
+          <p className="text-xs text-muted-foreground">How many gallery photos to show on the homepage preview section.</p>
+          <div className="flex items-center gap-3">
+            <Label htmlFor="homeLimit" className="whitespace-nowrap">Photo limit</Label>
+            <Input
+              id="homeLimit"
+              type="number"
+              min={1}
+              max={12}
+              value={homeLimit}
+              onChange={(e) => setHomeLimit(Math.min(12, Math.max(1, parseInt(e.target.value) || 1)))}
+              className="w-20"
+            />
+            <Button size="sm" onClick={saveHomeLimit} disabled={isSavingHomeLimit}>
+              {isSavingHomeLimit ? "Saving..." : "Save"}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardContent className="p-0">

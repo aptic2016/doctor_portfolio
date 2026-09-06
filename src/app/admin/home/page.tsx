@@ -3,10 +3,12 @@ import { profileService } from "@/services/profile/profile.service"
 import { HomeAdmin } from "./home-admin"
 
 export default async function AdminHomePage() {
-  const sections = await settingsService.getHomeSections().catch(() => [])
-  const brand = await settingsService.getBrandSettings().catch(() => null)
-  const profile = await profileService.getPublicProfile().catch(() => null)
-  const highlights = await settingsService.getAllHighlightMetrics().catch(() => [])
+  const [sections, brand, profile, highlights] = await Promise.all([
+    settingsService.getHomeSections().catch(() => []),
+    settingsService.getBrandSettings().catch(() => null),
+    profileService.getPublicProfile().catch(() => null),
+    settingsService.getAllHighlightMetrics().catch(() => []),
+  ])
 
   return (
     <HomeAdmin

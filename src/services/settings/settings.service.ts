@@ -1,5 +1,5 @@
 import { SettingsRepository } from "@/repositories/settings/settings.repository"
-import { BrandSettings, ThemeSettings, SiteSettings, NavigationItem, SocialLink, HomeSection, HighlightMetric, HeroOverlay } from "@prisma/client"
+import { BrandSettings, ThemeSettings, SiteSettings, NavigationItem, SocialLink, HomeSection, HomeSectionId, HighlightMetric, HeroOverlay } from "@prisma/client"
 
 export class SettingsService {
   private repository = new SettingsRepository()
@@ -46,6 +46,10 @@ export class SettingsService {
 
   async getHomeSections(): Promise<HomeSection[]> {
     return this.repository.getHomeSections()
+  }
+
+  async getHomeSectionBySectionId(sectionId: HomeSectionId): Promise<HomeSection | null> {
+    return this.repository.getHomeSectionBySectionId(sectionId)
   }
 
   async getVisibleHomeSections(): Promise<HomeSection[]> {

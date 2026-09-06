@@ -30,6 +30,7 @@ interface SiteSettingsData {
   aiEnabled?: boolean
   galleryEnabled?: boolean
   galleryLabel?: string
+  galleryHomeLimit?: number
   blogEnabled?: boolean
   maintenanceMode?: boolean
   footerText?: string | null
@@ -172,16 +173,9 @@ export function SiteSettingsClient({ initialSettings }: SiteSettingsClientProps)
           <CardDescription>Enable or disable site features</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <Label>AI Assistant</Label>
-              <p className="text-sm text-muted-foreground">Show AI chatbot on public site</p>
-            </div>
-            <Switch
-              checked={settings.aiEnabled ?? true}
-              onCheckedChange={(v) => update("aiEnabled", v)}
-            />
-          </div>
+          <p className="text-xs text-muted-foreground">
+            AI Assistant is managed in <a href="/admin/ai" className="text-primary hover:underline">AI Assistant</a>.
+          </p>
           <div className="flex items-center justify-between">
             <div>
               <Label>Gallery</Label>
@@ -193,13 +187,35 @@ export function SiteSettingsClient({ initialSettings }: SiteSettingsClientProps)
             />
           </div>
           {settings.galleryEnabled && (
-            <div className="ml-4">
-              <Label htmlFor="galleryLabel">Gallery Label</Label>
-              <Input
-                id="galleryLabel"
-                value={settings.galleryLabel || "Gallery"}
-                onChange={(e) => update("galleryLabel", e.target.value)}
-              />
+            <div className="ml-4 grid md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="galleryLabel">Gallery Label</Label>
+                <Input
+                  id="galleryLabel"
+                  value={settings.galleryLabel || "Gallery"}
+                  onChange={(e) => update("galleryLabel", e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="galleryHomeLimit">Photos on Home Page</Label>
+                <Input
+                  id="galleryHomeLimit"
+                  type="number"
+                  min={1}
+                  max={12}
+                  value={settings.galleryHomeLimit ?? 6}
+                  onChange={(e) =>
+                    update(
+                      "galleryHomeLimit",
+                      e.target.value === "" ? undefined : Number(e.target.value),
+                    )
+                  }
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  How many photos the home teaser shows (1–12). The full collection
+                  always stays on the Gallery page.
+                </p>
+              </div>
             </div>
           )}
           <div className="flex items-center justify-between">
@@ -265,15 +281,9 @@ export function SiteSettingsClient({ initialSettings }: SiteSettingsClientProps)
               rows={2}
             />
           </div>
-          <div>
-            <Label htmlFor="copyrightText">Copyright Text</Label>
-            <Input
-              id="copyrightText"
-              value={settings.copyrightText || ""}
-              onChange={(e) => update("copyrightText", e.target.value)}
-              placeholder="2026 Dr. Ayman Rahman. All rights reserved."
-            />
-          </div>
+          <p className="text-xs text-muted-foreground">
+            Copyright text and brand text are managed in <a href="/admin/footer" className="text-primary hover:underline">Footer → Settings</a>.
+          </p>
         </CardContent>
       </Card>
 

@@ -107,6 +107,14 @@ model Profile {
   philosophy         String?
   quote              String?
   resumeUrl          String?
+  aboutImageUrl      String?
+  aboutImageAlt      String?
+  showAboutImage     Boolean  @default(true)
+  aboutImagePosition String?
+  contactImageUrl    String?
+  contactImageAlt    String?
+  showContactImage   Boolean  @default(true)
+  contactImagePosition String?
   isVisible          Boolean  @default(true)
   allowAI             Boolean  @default(true)
   updatedAt          DateTime @updatedAt
@@ -199,6 +207,7 @@ model SiteSettings {
   aiEnabled            Boolean @default(true)
   galleryEnabled       Boolean @default(true)
   galleryLabel         String   @default("Gallery")
+  galleryHomeLimit     Int      @default(6)
   blogEnabled          Boolean @default(true)
   maintenanceMode      Boolean @default(false)
   footerText           String?

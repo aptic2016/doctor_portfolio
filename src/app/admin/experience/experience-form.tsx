@@ -14,6 +14,8 @@ import { toast } from "sonner"
 import { createExperience, updateExperience, deleteExperience } from "./actions/experience-actions"
 import { Experience } from "@prisma/client"
 import { ConfirmDialog } from "@/components/ui/confirm-dialog"
+import { SectionVisualEditor, VISUAL_SECTIONS } from "@/components/admin/shared/section-visual-editor"
+import type { SectionVisualRow } from "@/components/admin/shared/section-visual-editor"
 import { useForm, useWatch, type Resolver } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -36,7 +38,7 @@ const experienceSchema = z.object({
 
 type ExperienceFormValues = z.infer<typeof experienceSchema>
 
-export function AdminExperiencePage({ initialData }: { initialData: Experience[] }) {
+export function AdminExperiencePage({ initialData, sectionVisual }: { initialData: Experience[]; sectionVisual?: SectionVisualRow | null }) {
   const [data, setData] = useState(initialData)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -256,6 +258,17 @@ export function AdminExperiencePage({ initialData }: { initialData: Experience[]
         loading={isDeleting}
         onConfirm={() => { if (deleteTarget) onDelete(deleteTarget) }}
       />
+
+      {sectionVisual && (
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold">Home Preview</h3>
+          <p className="text-xs text-muted-foreground">Editorial image shown in the Professional Journey section on the homepage.</p>
+          <SectionVisualEditor
+            row={sectionVisual}
+            meta={VISUAL_SECTIONS.find((s) => s.sectionId === "EXPERIENCE_HIGHLIGHTS")!}
+          />
+        </div>
+      )}
     </div>
   )
 }

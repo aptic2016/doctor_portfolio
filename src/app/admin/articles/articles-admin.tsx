@@ -356,14 +356,9 @@ export function ArticlesAdmin({
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
                       {article.isPublished && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          render={<a href={`/articles/${article.slug}`} target="_blank" />}
-                        >
+                        <a href={`/articles/${article.slug}`} target="_blank" className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
                             <Eye className="h-4 w-4" />
-                        </Button>
+                        </a>
                       )}
                       <Button
                         variant="ghost"

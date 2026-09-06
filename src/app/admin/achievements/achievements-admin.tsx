@@ -36,6 +36,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Switch } from "@/components/ui/switch"
 import { ConfirmDialog } from "@/components/ui/confirm-dialog"
+import { SectionVisualEditor, VISUAL_SECTIONS } from "@/components/admin/shared/section-visual-editor"
+import type { SectionVisualRow } from "@/components/admin/shared/section-visual-editor"
 
 const achievementSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -66,7 +68,7 @@ interface Achievement {
   sortOrder: number
 }
 
-export function AchievementsAdmin({ initialData }: { initialData: Achievement[] }) {
+export function AchievementsAdmin({ initialData, sectionVisual }: { initialData: Achievement[]; sectionVisual?: SectionVisualRow | null }) {
   const [data, setData] = useState<Achievement[]>(initialData)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -343,6 +345,17 @@ export function AchievementsAdmin({ initialData }: { initialData: Achievement[] 
         loading={isDeleting}
         onConfirm={() => { if (deleteTarget) onDelete(deleteTarget) }}
       />
+
+      {sectionVisual && (
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold">Home Preview</h3>
+          <p className="text-xs text-muted-foreground">Editorial image shown in the Achievements section on the homepage.</p>
+          <SectionVisualEditor
+            row={sectionVisual}
+            meta={VISUAL_SECTIONS.find((s) => s.sectionId === "ACHIEVEMENTS")!}
+          />
+        </div>
+      )}
     </div>
   )
 }

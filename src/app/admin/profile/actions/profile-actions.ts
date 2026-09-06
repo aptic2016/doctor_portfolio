@@ -22,6 +22,7 @@ export async function updateProfile(data: ProfileFormValues) {
   revalidatePath("/admin/profile")
   revalidatePath("/")
   revalidatePath("/about")
+  revalidatePath("/contact")
 
   return { success: true }
 }

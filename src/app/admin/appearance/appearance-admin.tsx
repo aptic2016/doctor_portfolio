@@ -165,7 +165,6 @@ export function AppearanceAdmin({
   })
 
   const [isSaving, setIsSaving] = useState(false)
-  const [showLocalInfo, setShowLocalInfo] = useState(initialSiteSettings?.showLocalInfo ?? false)
 
   const applyPreset = (name: string) => {
     const preset = THEME_PRESETS[name as keyof typeof THEME_PRESETS]
@@ -193,15 +192,6 @@ export function AppearanceAdmin({
       ])
 
       if (!brandRes.ok || !themeRes.ok) throw new Error("Failed to save")
-
-      // Save showLocalInfo to site settings if changed
-      if (initialSiteSettings?.id) {
-        await fetch("/api/admin/seo-settings", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ showLocalInfo }),
-        }).catch(() => {})
-      }
 
       toast.success("Appearance settings saved")
     } catch {
@@ -304,15 +294,6 @@ export function AppearanceAdmin({
                   <p className="text-sm font-medium capitalize">{mode.toLowerCase()}</p>
                 </button>
               ))}
-            </div>
-            <div className="pt-2 border-t border-border/50">
-              <label className="flex items-center gap-3 text-sm cursor-pointer">
-                <input type="checkbox" checked={showLocalInfo} onChange={(e) => setShowLocalInfo(e.target.checked)} className="rounded" />
-                <div>
-                  <span className="font-medium">Show Local Information</span>
-                  <span className="text-muted-foreground text-xs block">Display timezone, date, and location on the public site</span>
-                </div>
-              </label>
             </div>
           </CardContent>
         </Card>
@@ -435,7 +416,6 @@ export function AppearanceAdmin({
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="space-y-1"><Label className="text-xs">Badge Text</Label><Input value={brand.heroBadgeText || ""} onChange={(e) => setBrand({ ...brand, heroBadgeText: e.target.value })} className="h-8 text-xs" /></div>
             <div className="space-y-1"><Label className="text-xs">Primary CTA Label</Label><Input value={brand.heroPrimaryCtaLabel || ""} onChange={(e) => setBrand({ ...brand, heroPrimaryCtaLabel: e.target.value })} className="h-8 text-xs" /></div>
             <div className="space-y-1"><Label className="text-xs">Primary CTA Link</Label><Input value={brand.heroPrimaryCtaDest || ""} onChange={(e) => setBrand({ ...brand, heroPrimaryCtaDest: e.target.value })} className="h-8 text-xs font-mono" /></div>
             <div className="space-y-1"><Label className="text-xs">Secondary CTA Label</Label><Input value={brand.heroSecondaryCtaLabel || ""} onChange={(e) => setBrand({ ...brand, heroSecondaryCtaLabel: e.target.value })} className="h-8 text-xs" /></div>
@@ -443,24 +423,9 @@ export function AppearanceAdmin({
             <div className="space-y-1"><Label className="text-xs">CV CTA Label</Label><Input value={brand.heroCvCtaLabel || ""} onChange={(e) => setBrand({ ...brand, heroCvCtaLabel: e.target.value })} className="h-8 text-xs" /></div>
           </div>
           <div className="flex flex-wrap gap-4">
-            {([["heroShowBadge", "Show Badge"], ["heroShowWorkplace", "Show Workplace"], ["heroShowLocation", "Show Location"], ["heroShowQualifications", "Show Qualifications"], ["heroShowInterests", "Show Interests"], ["heroShowCvCta", "Show CV CTA"]] as const).map(([key, label]) => (
+            {([["heroShowWorkplace", "Show Workplace"], ["heroShowLocation", "Show Location"], ["heroShowQualifications", "Show Qualifications"], ["heroShowInterests", "Show Interests"], ["heroShowCvCta", "Show CV CTA"]] as const).map(([key, label]) => (
               <label key={key} className="flex items-center gap-2 text-xs"><input type="checkbox" checked={!!brand[key]} onChange={(e) => setBrand({ ...brand, [key]: e.target.checked })} className="rounded" />{label}</label>
             ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Footer */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Footer</CardTitle>
-          <CardDescription>Configure footer labels and content.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="space-y-1"><Label className="text-xs">Navigation Title</Label><Input value={brand.footerNavTitle || ""} onChange={(e) => setBrand({ ...brand, footerNavTitle: e.target.value })} className="h-8 text-xs" /></div>
-            <div className="space-y-1"><Label className="text-xs">Contact Title</Label><Input value={brand.footerContactTitle || ""} onChange={(e) => setBrand({ ...brand, footerContactTitle: e.target.value })} className="h-8 text-xs" /></div>
-            <div className="space-y-1"><Label className="text-xs">Footer Description</Label><Input value={brand.footerDescription || ""} onChange={(e) => setBrand({ ...brand, footerDescription: e.target.value })} className="h-8 text-xs" /></div>
           </div>
         </CardContent>
       </Card>

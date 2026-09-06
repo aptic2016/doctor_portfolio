@@ -2,6 +2,7 @@
 
 import React, { useState } from "react"
 import { profileSchema, ProfileFormValues } from "@/lib/validators/profile"
+import { resolveFocalPosition } from "@/lib/media/focal-point"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
@@ -41,6 +42,18 @@ export function ProfileForm({ initialData }: { initialData: Profile }) {
       philosophy: initialData.philosophy || "",
       quote: initialData.quote || "",
       resumeUrl: initialData.resumeUrl || "",
+      aboutImageUrl: initialData.aboutImageUrl || "",
+      aboutImageAlt: initialData.aboutImageAlt || "",
+      showAboutImage: initialData.showAboutImage ?? true,
+      /* These four are edited on the About and Contact screens, not here — the
+         form only carries them so a save round-trips them untouched. Seeded
+         through the resolver so a row written before the preset set was closed
+         cannot make this form unsubmittable. */
+      aboutImagePosition: resolveFocalPosition(initialData.aboutImagePosition),
+      contactImageUrl: initialData.contactImageUrl || "",
+      contactImageAlt: initialData.contactImageAlt || "",
+      showContactImage: initialData.showContactImage ?? true,
+      contactImagePosition: resolveFocalPosition(initialData.contactImagePosition),
       isVisible: initialData.isVisible ?? true,
       allowAI: initialData.allowAI ?? true,
     },

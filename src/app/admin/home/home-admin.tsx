@@ -5,7 +5,6 @@ import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Eye, EyeOff, ArrowRight, LayoutGrid, BarChart3, Palette } from "lucide-react"
-import { SectionVisualsPanel } from "./section-visuals-panel"
 
 interface Section {
   id: string
@@ -127,9 +126,9 @@ export function HomeAdmin({
             <CardTitle>Sections Overview</CardTitle>
             <CardDescription>Your homepage sections in order</CardDescription>
           </div>
-          <Button size="sm" render={<Link href="/admin/home-sections" />}>
-            Manage Sections <ArrowRight className="h-4 w-4 ml-1" />
-          </Button>
+          <Link href="/admin/home-sections" className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+            Manage Sections <ArrowRight className="h-4 w-4" />
+          </Link>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
@@ -163,8 +162,32 @@ export function HomeAdmin({
         </CardContent>
       </Card>
 
-      {/* Editorial images for the three visual home sections */}
-      <SectionVisualsPanel sections={sections} />
+      {/* Editorial images — managed in their content admin pages */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Section Visuals</CardTitle>
+          <CardDescription>
+            Editorial images for the three home sections. Each image is managed in its content area admin.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {[
+              { label: "Professional Journey", href: "/admin/experience", note: "Chronicle Rail" },
+              { label: "Education", href: "/admin/education", note: "Scholar Folio" },
+              { label: "Achievements", href: "/admin/achievements", note: "Distinction Prism" },
+            ].map((item) => (
+              <Link key={item.href} href={item.href} className="block">
+                <div className="rounded-lg border p-3 hover:bg-muted/50 transition-colors">
+                  <p className="text-sm font-medium">{item.label}</p>
+                  <p className="text-xs text-muted-foreground">{item.note}</p>
+                  <p className="text-xs text-primary mt-1 flex items-center gap-1">Manage <ArrowRight className="h-3 w-3" /></p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Quick Links */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

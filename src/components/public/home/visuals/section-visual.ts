@@ -7,6 +7,17 @@
  * rather than being restated (and drifting) inside each frame.
  */
 
+/* Focal presets live in the shared media module, because the About and Contact
+   portraits offer the same nine choices. Re-exported below so the home frames
+   and their admin panel keep importing their vocabulary from one place. */
+import { resolveFocalPosition } from "@/lib/media/focal-point"
+
+export {
+  DEFAULT_MEDIA_POSITION,
+  MEDIA_POSITIONS,
+  isMediaPosition,
+} from "@/lib/media/focal-point"
+
 /** The `HomeSection` fields the public home page hands to a section component. */
 export interface HomeSectionConfig {
   eyebrow?: string | null
@@ -27,28 +38,6 @@ export interface SectionVisual {
   position: string
 }
 
-export const DEFAULT_MEDIA_POSITION = "50% 50%"
-
-/**
- * Focal presets. Stored verbatim as a CSS `object-position` value, so the set is
- * closed — the server action rejects anything outside it.
- */
-export const MEDIA_POSITIONS: { value: string; label: string }[] = [
-  { value: "0% 0%", label: "Top left" },
-  { value: "50% 0%", label: "Top" },
-  { value: "100% 0%", label: "Top right" },
-  { value: "0% 50%", label: "Left" },
-  { value: DEFAULT_MEDIA_POSITION, label: "Center" },
-  { value: "100% 50%", label: "Right" },
-  { value: "0% 100%", label: "Bottom left" },
-  { value: "50% 100%", label: "Bottom" },
-  { value: "100% 100%", label: "Bottom right" },
-]
-
-export function isMediaPosition(value: string): boolean {
-  return MEDIA_POSITIONS.some((p) => p.value === value)
-}
-
 /**
  * Resolves the visual for a section, or `null` when the section must fall back
  * to its content-only layout — no image chosen, or the admin turned it off.
@@ -62,11 +51,10 @@ export function resolveSectionVisual(
   if (!section || section.showMedia === false) return null
   const src = section.mediaUrl?.trim()
   if (!src) return null
-  const position = section.mediaPosition?.trim()
   return {
     src,
     alt: section.mediaAltText?.trim() || fallbackAlt,
-    position: position && isMediaPosition(position) ? position : DEFAULT_MEDIA_POSITION,
+    position: resolveFocalPosition(section.mediaPosition),
   }
 }
 

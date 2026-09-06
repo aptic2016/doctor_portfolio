@@ -14,6 +14,8 @@ import { toast } from "sonner"
 import { createEducation, updateEducation, deleteEducation } from "./actions/education-actions"
 import { Education } from "@prisma/client"
 import { ConfirmDialog } from "@/components/ui/confirm-dialog"
+import { SectionVisualEditor, VISUAL_SECTIONS } from "@/components/admin/shared/section-visual-editor"
+import type { SectionVisualRow } from "@/components/admin/shared/section-visual-editor"
 import { useForm, useWatch, type Resolver } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -34,7 +36,7 @@ const educationSchema = z.object({
 
 type EducationFormValues = z.infer<typeof educationSchema>
 
-export function AdminEducationPage({ initialData }: { initialData: Education[] }) {
+export function AdminEducationPage({ initialData, sectionVisual }: { initialData: Education[]; sectionVisual?: SectionVisualRow | null }) {
   const [data, setData] = useState(initialData)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -235,6 +237,17 @@ export function AdminEducationPage({ initialData }: { initialData: Education[] }
         loading={isDeleting}
         onConfirm={() => { if (deleteTarget) onDelete(deleteTarget) }}
       />
+
+      {sectionVisual && (
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold">Home Preview</h3>
+          <p className="text-xs text-muted-foreground">Editorial image shown in the Education section on the homepage.</p>
+          <SectionVisualEditor
+            row={sectionVisual}
+            meta={VISUAL_SECTIONS.find((s) => s.sectionId === "EDUCATION_HIGHLIGHTS")!}
+          />
+        </div>
+      )}
     </div>
   )
 }

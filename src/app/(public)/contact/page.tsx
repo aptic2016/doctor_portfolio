@@ -1,8 +1,10 @@
 import { Metadata } from "next"
+import Image from "next/image"
 import { Profile, SiteSettings } from "@prisma/client"
 import { settingsService } from "@/services/settings/settings.service"
 import { profileService } from "@/services/profile/profile.service"
 import { prisma } from "@/lib/db"
+import { resolveFocalPosition } from "@/lib/media/focal-point"
 import { ContactForm } from "@/components/public/contact/contact-form"
 import { Mail, Phone, MapPin, Clock, Navigation } from "lucide-react"
 import { DefaultChamberIcon } from "@/components/public/shared/default-chamber-icon"
@@ -74,6 +76,7 @@ export default async function ContactPage() {
 
   const primaryLocation = locations.find((l) => l.isPrimary) || locations[0]
   const embedUrl = primaryLocation ? getMapEmbedUrl(primaryLocation) : null
+  const showContactImage = profile?.showContactImage && profile?.contactImageUrl
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
@@ -149,8 +152,41 @@ export default async function ContactPage() {
             )}
           </div>
 
-          {/* Right: Contact Info + Form */}
+          {/* Right: Identity Card + Contact Info + Form */}
           <div className="space-y-6">
+            {/* Personal Contact Portrait */}
+            {showContactImage && (
+              <div className="relative p-4 rounded-2xl border border-border/50 bg-surface/50">
+                <div className="flex items-center gap-4">
+                  {/* Compact portrait with offset ring */}
+                  <div className="relative shrink-0">
+                    <div className="absolute -inset-1 rounded-xl bg-primary/[0.06] border border-primary/10" aria-hidden="true" />
+                    <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-muted">
+                      <Image
+                        src={profile!.contactImageUrl!}
+                        alt={profile!.contactImageAlt || `${profile!.displayName} - ${profile!.professionalTitle}`}
+                        fill
+                        sizes="80px"
+                        className="object-cover"
+                        style={{ objectPosition: resolveFocalPosition(profile!.contactImagePosition) }}
+                      />
+                    </div>
+                  </div>
+                  {/* Identity text */}
+                  <div className="min-w-0">
+                    <p className="font-semibold text-foreground truncate">{profile!.displayName}</p>
+                    <p className="text-sm text-primary truncate">{profile!.professionalTitle}</p>
+                    {profile!.location && (
+                      <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
+                        <MapPin className="h-3 w-3 shrink-0" />
+                        <span className="truncate">{profile!.location}</span>
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="p-6 rounded-2xl border border-border/50 bg-surface/50 space-y-4">
               <h3 className="font-semibold text-foreground">Contact Information</h3>
               <div className="space-y-3">

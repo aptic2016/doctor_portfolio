@@ -6,7 +6,10 @@
  * database rows here and hand plain data to the client leaves.
  */
 
-/** Maximum number of photos the home page teaser is allowed to render. */
+/**
+ * Photos the home teaser shows when site settings carry no configured value —
+ * the admin control in Site Settings overrides this per site.
+ */
 export const HOME_GALLERY_LIMIT = 6
 
 /** Used when a media asset has no stored dimensions, so tiles never collapse. */

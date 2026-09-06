@@ -239,9 +239,9 @@ export function PublicationsAdmin({ initialData }: { initialData: Publication[] 
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
                       {item.externalUrl && (
-                        <Button variant="ghost" size="icon" className="h-8 w-8" render={<a href={item.externalUrl} target="_blank" rel="noopener noreferrer" />}>
+                        <a href={item.externalUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
                             <ExternalLink className="h-4 w-4" />
-                        </Button>
+                        </a>
                       )}
                       <Button
                         variant="ghost"

@@ -4,13 +4,19 @@ import {
   Award,
   Briefcase,
   GraduationCap,
-  ArrowUpRight
+  ArrowUpRight,
+  User,
+  LayoutDashboard,
+  Images,
+  MessageSquare,
+  Bot,
+  MapPin
 } from "lucide-react"
+import Link from "next/link"
 import { profileService } from "@/services/profile/profile.service"
 import { contentService } from "@/services/content/content.service"
-import { mediaService } from "@/services/media/media.service"
 import { cn } from "@/lib/utils"
-import type { Profile, Education, Experience, Qualification, Publication, MediaAsset } from "@prisma/client"
+import type { Profile, Education, Experience, Qualification, Publication } from "@prisma/client"
 
 export default async function AdminDashboard() {
   let profile: Profile | null = null
@@ -18,18 +24,16 @@ export default async function AdminDashboard() {
   let experience: Experience[] = []
   let qualifications: Qualification[] = []
   let publications: Publication[] = []
-  let mediaAssets: MediaAsset[] = []
 
   try {
     profile = await profileService.getPublicProfile()
     const profileId = profile?.id || ""
-    ;[education, experience, qualifications, publications, mediaAssets] =
+    ;[education, experience, qualifications, publications] =
       await Promise.all([
         contentService.getEducation(profileId),
         contentService.getExperience(profileId),
         contentService.getQualifications(profileId),
         contentService.getPublications(profileId),
-        mediaService.getAllAssets(),
       ])
   } catch {
     // Database unavailable at build time
@@ -71,24 +75,27 @@ export default async function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle className="text-base">Quick Stats</CardTitle>
+            <CardTitle className="text-base">Quick Actions</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Media Assets</span>
-              <span className="font-medium">{mediaAssets.length}</span>
-            </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Profile Status</span>
-              <span className={cn("font-medium", profile?.isVisible ? "text-green-500 dark:text-green-400" : "text-yellow-500 dark:text-yellow-400")}>
-                {profile?.isVisible ? "Published" : "Hidden"}
-              </span>
-            </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">AI Enabled</span>
-              <span className={cn("font-medium", profile?.allowAI ? "text-green-500 dark:text-green-400" : "text-yellow-500 dark:text-yellow-400")}>
-                {profile?.allowAI ? "Yes" : "No"}
-              </span>
+          <CardContent>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {([
+                { label: "Edit Profile", href: "/admin/profile", icon: User },
+                { label: "Edit Home", href: "/admin/home", icon: LayoutDashboard },
+                { label: "Manage Gallery", href: "/admin/gallery", icon: Images },
+                { label: "View Messages", href: "/admin/messages", icon: MessageSquare },
+                { label: "AI Conversations", href: "/admin/ai", icon: Bot },
+                { label: "Practice Locations", href: "/admin/footer", icon: MapPin },
+              ] as const).map((action) => (
+                <Link
+                  key={action.href}
+                  href={action.href}
+                  className="flex items-center gap-2 p-3 rounded-lg border border-border/50 hover:border-primary/50 hover:bg-primary/5 transition-colors text-sm"
+                >
+                  <action.icon className="h-4 w-4 text-muted-foreground" />
+                  {action.label}
+                </Link>
+              ))}
             </div>
           </CardContent>
         </Card>

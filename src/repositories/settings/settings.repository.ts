@@ -1,4 +1,4 @@
-import { Prisma, BrandSettings, ThemeSettings, SiteSettings, NavigationItem, SocialLink, HomeSection, HighlightMetric, HeroOverlay } from "@prisma/client"
+import { Prisma, BrandSettings, ThemeSettings, SiteSettings, NavigationItem, SocialLink, HomeSection, HomeSectionId, HighlightMetric, HeroOverlay } from "@prisma/client"
 import { prisma } from "@/lib/db"
 
 export class SettingsRepository {
@@ -86,6 +86,10 @@ export class SettingsRepository {
 
   async getHomeSections(): Promise<HomeSection[]> {
     return prisma.homeSection.findMany({ orderBy: { sortOrder: "asc" } })
+  }
+
+  async getHomeSectionBySectionId(sectionId: HomeSectionId): Promise<HomeSection | null> {
+    return prisma.homeSection.findFirst({ where: { sectionId } })
   }
 
   async getVisibleHomeSections(): Promise<HomeSection[]> {

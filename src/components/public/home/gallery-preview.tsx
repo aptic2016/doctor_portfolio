@@ -1,8 +1,8 @@
 import React from "react"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
 import { contentService } from "@/services/content/content.service"
 import { profileService } from "@/services/profile/profile.service"
+import { settingsService } from "@/services/settings/settings.service"
 import { buttonVariants } from "@/components/ui/button"
 import { RevealSection } from "@/components/public/shared/use-reveal"
 import { SectionHeading } from "@/components/public/shared/section-heading"
@@ -13,18 +13,30 @@ import { HOME_GALLERY_LIMIT, toGalleryPhotos } from "@/components/public/gallery
  * HOME GALLERY SECTION — a curated teaser, never the whole collection.
  *
  * Stays a server component: it reads the same visible gallery items in the same
- * admin sort order as the gallery page, trims them to HOME_GALLERY_LIMIT and
+ * admin sort order as the gallery page, trims them to the configured home limit and
  * hands plain data to the client grid that owns the lightbox.
  */
 export async function GalleryPreview({ section }: { section?: { eyebrow?: string | null; heading?: string | null; sectionNumber?: string | null; showSectionNumber?: boolean } }) {
   let profile = null
   let gallery: Awaited<ReturnType<typeof contentService.getVisibleGalleryItems>> = []
+  let homeLimit: number = HOME_GALLERY_LIMIT
   try {
-    profile = await profileService.getPublicProfile()
-    if (profile) gallery = await contentService.getVisibleGalleryItems()
+    /* One round trip for all three reads. A missing site-settings row is not
+       fatal — the teaser just falls back to the shared default count. */
+    const [profileResult, galleryResult, siteSettings] = await Promise.all([
+      profileService.getPublicProfile(),
+      contentService.getVisibleGalleryItems(),
+      settingsService.getSiteSettings().catch(() => null),
+    ])
+    profile = profileResult
+    gallery = galleryResult
+    homeLimit = siteSettings?.galleryHomeLimit ?? HOME_GALLERY_LIMIT
   } catch { return null }
 
-  const photos = toGalleryPhotos(gallery).slice(0, HOME_GALLERY_LIMIT)
+  /* No published profile means no public content at all, gallery included. */
+  if (!profile) return null
+
+  const photos = toGalleryPhotos(gallery).slice(0, homeLimit)
   if (photos.length === 0) return null
 
   return (

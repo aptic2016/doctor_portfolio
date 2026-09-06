@@ -1,7 +1,8 @@
 "use client"
 
 import React, { useState } from "react"
-import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
@@ -29,15 +30,14 @@ interface FooterSettings { id: string; profileEnabled: boolean; profileImage: st
 interface SocialLink { id: string; platform: string; label: string; url: string; icon: string | null; iconKey: string | null; hoverColor: string | null; isVisible: boolean; sortOrder: number }
 interface NavItem { id: string; label: string; destination: string; isVisible: boolean; sortOrder: number }
 interface Profile { fullName?: string; displayName?: string; profileImage?: string | null; professionalTitle?: string; shortBio?: string | null }
-interface BrandSettings { siteName?: string }
+interface BrandSettings { siteName?: string; footerNavTitle?: string; footerContactTitle?: string; footerDescription?: string | null }
 
-type Tab = "profile" | "navigation" | "treatments" | "locations" | "social" | "settings"
+type Tab = "profile" | "navigation" | "treatments" | "social" | "settings"
 
 const TABS: { key: Tab; label: string; icon: React.ReactNode }[] = [
   { key: "profile", label: "Profile", icon: <User className="h-4 w-4" /> },
   { key: "navigation", label: "Navigation", icon: <LinkIcon className="h-4 w-4" /> },
   { key: "treatments", label: "Treatments", icon: <Stethoscope className="h-4 w-4" /> },
-  { key: "locations", label: "Locations", icon: <MapPin className="h-4 w-4" /> },
   { key: "social", label: "Social Links", icon: <Share2 className="h-4 w-4" /> },
   { key: "settings", label: "Settings", icon: <Settings className="h-4 w-4" /> },
 ]
@@ -56,6 +56,7 @@ export function FooterAdmin({
     useMainProfile: true, navigationEnabled: true, treatmentsEnabled: true, locationsEnabled: true,
     socialLinksEnabled: true, copyrightText: null, brandText: "Aptic", chamberSectionEyebrow: null, chamberSectionHeading: null, chamberSectionSupport: null,
   })
+  const [brandSettingsState, setBrandSettingsState] = useState<BrandSettings>(brandSettings ?? { siteName: "" })
 
   return (
     <div className="space-y-6">
@@ -80,9 +81,8 @@ export function FooterAdmin({
       {tab === "profile" && <ProfileTab settings={settings} setSettings={setSettings} profile={profile} />}
       {tab === "navigation" && <NavigationTab />}
       {tab === "treatments" && <TreatmentsTab items={initialTreatments} />}
-      {tab === "locations" && <LocationsTab items={initialLocations} />}
       {tab === "social" && <SocialTab items={initialSocialLinks} />}
-      {tab === "settings" && <SettingsTab settings={settings} setSettings={setSettings} brandName={brandSettings?.siteName} />}
+      {tab === "settings" && <SettingsTab settings={settings} setSettings={setSettings} brandName={brandSettingsState?.siteName} brandSettings={brandSettingsState} setBrandSettings={setBrandSettingsState} />}
     </div>
   )
 }
@@ -577,7 +577,7 @@ function SocialTab({ items: initial }: { items: SocialLink[] }) {
 
 /* ─── Settings Tab ─── */
 
-function SettingsTab({ settings, setSettings, brandName }: { settings: FooterSettings; setSettings: (s: FooterSettings) => void; brandName?: string }) {
+function SettingsTab({ settings, setSettings, brandName, brandSettings, setBrandSettings }: { settings: FooterSettings; setSettings: (s: FooterSettings) => void; brandName?: string; brandSettings: BrandSettings; setBrandSettings: (s: BrandSettings) => void }) {
   const [saving, setSaving] = useState(false)
 
   const save = async (patch: Partial<FooterSettings>) => {
@@ -624,6 +624,47 @@ function SettingsTab({ settings, setSettings, brandName }: { settings: FooterSet
           <div><Label>Copyright Text</Label><Input value={settings.copyrightText || ""} onChange={(e) => setSettings({ ...settings, copyrightText: e.target.value || null })} onBlur={() => save({ copyrightText: settings.copyrightText })} placeholder={`© ${new Date().getFullYear()} ${brandName || "Aptic"}. All rights reserved.`} /></div>
           <div><Label>Brand Text</Label><Input value={settings.brandText} onChange={(e) => setSettings({ ...settings, brandText: e.target.value })} onBlur={() => save({ brandText: settings.brandText })} placeholder="Aptic" /></div>
         </div>
+
+        <hr className="border-border/30" />
+        <h3 className="text-sm font-semibold">Footer Labels</h3>
+        <p className="text-xs text-muted-foreground mb-3">Section labels displayed in the public footer.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="space-y-1">
+            <Label className="text-xs">Navigation Title</Label>
+            <Input
+              value={brandSettings.footerNavTitle || ""}
+              onChange={(e) => setBrandSettings({ ...brandSettings, footerNavTitle: e.target.value })}
+              onBlur={() => fetch("/api/admin/brand-settings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ footerNavTitle: brandSettings.footerNavTitle }) }).then(() => toast.success("Label saved")).catch(() => toast.error("Failed"))}
+              placeholder="Navigation"
+              className="h-8 text-xs"
+            />
+          </div>
+          <div className="space-y-1">
+            <Label className="text-xs">Contact Title</Label>
+            <Input
+              value={brandSettings.footerContactTitle || ""}
+              onChange={(e) => setBrandSettings({ ...brandSettings, footerContactTitle: e.target.value })}
+              onBlur={() => fetch("/api/admin/brand-settings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ footerContactTitle: brandSettings.footerContactTitle }) }).then(() => toast.success("Label saved")).catch(() => toast.error("Failed"))}
+              placeholder="Connect"
+              className="h-8 text-xs"
+            />
+          </div>
+          <div className="space-y-1">
+            <Label className="text-xs">Footer Description</Label>
+            <Input
+              value={brandSettings.footerDescription || ""}
+              onChange={(e) => setBrandSettings({ ...brandSettings, footerDescription: e.target.value })}
+              onBlur={() => fetch("/api/admin/brand-settings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ footerDescription: brandSettings.footerDescription }) }).then(() => toast.success("Label saved")).catch(() => toast.error("Failed"))}
+              placeholder="Optional description"
+              className="h-8 text-xs"
+            />
+          </div>
+        </div>
+
+        <hr className="border-border/30" />
+        <h3 className="text-sm font-semibold">Practice Locations</h3>
+        <p className="text-xs text-muted-foreground mb-2">Practice locations are managed in the Contact admin.</p>
+        <Link href="/admin/contact" className="text-xs text-primary hover:underline">Manage Practice Locations →</Link>
       </CardContent>
     </Card>
   )
