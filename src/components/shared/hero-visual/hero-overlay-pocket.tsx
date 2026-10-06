@@ -26,6 +26,13 @@ export function HeroOverlayPocket({
   const [entered, setEntered] = useState(false)
   const [mounted, setMounted] = useState(false)
 
+  // Keep the centered pocket inside its container so it never creates page-level
+  // horizontal scroll when the configured width reaches the container edge.
+  const widthPx = /^-?\d+(\.\d+)?px$/.test(width.trim()) ? Math.abs(parseFloat(width)) : null
+  const left = widthPx
+    ? `clamp(${widthPx / 2}px, ${x}%, calc(100% - ${widthPx / 2}px))`
+    : `${x}%`
+
   useEffect(() => {
     if (!animate) {
       setMounted(true)
@@ -46,7 +53,7 @@ export function HeroOverlayPocket({
     <div
       className={`absolute ${style || ""} rounded-lg px-3 py-2`}
       style={{
-        left: `${x}%`,
+        left,
         top: `${y}%`,
         width,
         opacity: !mounted ? 0 : entered ? opacity : 0,

@@ -10,13 +10,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteUrl}/education`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
     { url: `${siteUrl}/experience`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
     { url: `${siteUrl}/qualifications`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${siteUrl}/achievements`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${siteUrl}/publications`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${siteUrl}/articles`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.7 },
+    { url: `${siteUrl}/gallery`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
     { url: `${siteUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
   ]
 
+  let resumePages: MetadataRoute.Sitemap = []
   let articlePages: MetadataRoute.Sitemap = []
   let publicationPages: MetadataRoute.Sitemap = []
 
   try {
+    const cvSettings = await prisma.cvSettings.findFirst({
+      select: { resumeEnabled: true, publicResumeEnabled: true },
+    })
+    if (cvSettings?.resumeEnabled && cvSettings?.publicResumeEnabled) {
+      resumePages = [
+        {
+          url: `${siteUrl}/resume`,
+          lastModified: new Date(),
+          changeFrequency: "monthly" as const,
+          priority: 0.8,
+        },
+      ]
+    }
+
     const articles = await prisma.article.findMany({
       where: { isPublished: true, isDraft: false },
       select: { slug: true, updatedAt: true },
@@ -44,5 +63,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Database unavailable at build time
   }
 
-  return [...staticPages, ...articlePages, ...publicationPages]
+  return [...staticPages, ...resumePages, ...articlePages, ...publicationPages]
 }

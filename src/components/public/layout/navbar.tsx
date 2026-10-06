@@ -1,11 +1,11 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { Menu, X, Stethoscope, Sun, Moon, Monitor } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { useTheme } from "@/components/shared/theme/theme-provider"
 import { ConnectCue } from "@/components/shared/connect-cue"
 import { cn } from "@/lib/utils"
@@ -26,8 +26,9 @@ export function Navbar({ navItems, brandLogo, siteName }: {
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const [themeOpen, setThemeOpen] = useState(false)
+  const themeDropdownRef = useRef<HTMLDivElement>(null)
   const [scrolled, setScrolled] = useState(false)
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, mounted } = useTheme()
   const pathname = usePathname()
   const visibleItems = navItems.filter((i) => i.isVisible)
   const desktopItems = visibleItems.filter((i) => i.desktopVisible)
@@ -38,6 +39,32 @@ export function Navbar({ navItems, brandLogo, siteName }: {
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
+
+  useEffect(() => {
+    if (!themeOpen) return
+
+    const onPointerDown = (e: PointerEvent) => {
+      const root = themeDropdownRef.current
+      if (!root) return
+      const target = e.target
+      if (target instanceof Node && !root.contains(target)) {
+        setThemeOpen(false)
+      }
+    }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault()
+        setThemeOpen(false)
+      }
+    }
+
+    document.addEventListener("pointerdown", onPointerDown, true)
+    document.addEventListener("keydown", onKeyDown)
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown, true)
+      document.removeEventListener("keydown", onKeyDown)
+    }
+  }, [themeOpen])
 
   const themeOptions = [
     { value: "light" as const, icon: Sun, label: "Light" },
@@ -94,20 +121,25 @@ export function Navbar({ navItems, brandLogo, siteName }: {
 
           {/* Right */}
           <div className="hidden lg:flex items-center gap-2.5">
-            <div className="relative">
+            <div className="relative" ref={themeDropdownRef}>
               <button
                 onClick={() => setThemeOpen(!themeOpen)}
-                className="h-8 w-8 inline-flex items-center justify-center rounded-full border bg-surface/50 hover:bg-muted transition-colors"
+                className="h-8 w-8 inline-flex items-center justify-center rounded-full border bg-background hover:bg-muted transition-colors"
                 title="Theme"
               >
-                {theme === "light" && <Sun className="h-3.5 w-3.5" />}
-                {theme === "dark" && <Moon className="h-3.5 w-3.5" />}
-                {theme === "system" && <Monitor className="h-3.5 w-3.5" />}
+                {mounted ? (
+                  <>
+                    {theme === "light" && <Sun className="h-3.5 w-3.5" />}
+                    {theme === "dark" && <Moon className="h-3.5 w-3.5" />}
+                    {theme === "system" && <Monitor className="h-3.5 w-3.5" />}
+                  </>
+                ) : (
+                  <Monitor className="h-3.5 w-3.5" />
+                )}
               </button>
               {themeOpen && (
                 <>
-                  <div className="fixed inset-0 z-40" onClick={() => setThemeOpen(false)} />
-                  <div className="absolute top-full right-0 mt-2 w-36 bg-surface border rounded-xl shadow-xl py-1 z-50">
+                  <div className="absolute top-full right-0 mt-2 w-36 bg-background border border-border rounded-xl shadow-lg py-1 z-50">
                     {themeOptions.map((opt) => (
                       <button
                         key={opt.value}
@@ -128,9 +160,12 @@ export function Navbar({ navItems, brandLogo, siteName }: {
             </div>
             <div className="relative flex items-center">
               <ConnectCue />
-              <Button size="sm" className="h-8 px-3.5 text-sm rounded-full" render={<Link href="/contact" />}>
+              <Link
+                href="/contact"
+                className={buttonVariants({ size: "sm", className: "h-8 px-3.5 text-sm rounded-full" })}
+              >
                 Connect
-              </Button>
+              </Link>
             </div>
           </div>
 
@@ -202,7 +237,9 @@ export function Navbar({ navItems, brandLogo, siteName }: {
                   onClick={() => setTheme(opt.value)}
                   className={cn(
                     "flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium rounded-lg border transition-colors",
-                    theme === opt.value ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground"
+                    mounted && theme === opt.value
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border text-muted-foreground hover:text-foreground hover:bg-muted"
                   )}
                 >
                   <opt.icon className="h-3.5 w-3.5" />
@@ -210,9 +247,13 @@ export function Navbar({ navItems, brandLogo, siteName }: {
                 </button>
               ))}
             </div>
-            <Button className="w-full rounded-xl" render={<Link href="/contact" onClick={() => setIsOpen(false)} />}>
+            <Link
+              href="/contact"
+              onClick={() => setIsOpen(false)}
+              className={buttonVariants({ className: "w-full rounded-xl" })}
+            >
               Connect
-            </Button>
+            </Link>
           </div>
         </div>
       </div>

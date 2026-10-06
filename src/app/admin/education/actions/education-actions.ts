@@ -18,6 +18,7 @@ export async function createEducation(data: Omit<Prisma.EducationCreateInput, "p
     profile: { connect: { id: profile.id } },
   })
   revalidatePath("/admin/education")
+  revalidatePath("/education")
   return { success: true }
 }
 
@@ -27,6 +28,7 @@ export async function updateEducation(id: string, data: Prisma.EducationUpdateIn
 
   await contentService.updateEducation(id, data)
   revalidatePath("/admin/education")
+  revalidatePath("/education")
   return { success: true }
 }
 
@@ -36,5 +38,6 @@ export async function deleteEducation(id: string) {
 
   await contentService.deleteEducation(id)
   revalidatePath("/admin/education")
+  revalidatePath("/education")
   return { success: true }
 }

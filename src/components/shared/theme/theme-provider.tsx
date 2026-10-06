@@ -6,11 +6,13 @@ import { BrandSettings, ThemeSettings } from "@prisma/client"
 interface ThemeContextType {
   theme: "light" | "dark" | "system"
   setTheme: (theme: "light" | "dark" | "system") => void
+  mounted: boolean
 }
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: "system",
   setTheme: () => {},
+  mounted: false,
 })
 
 function getSystemTheme(): "light" | "dark" {
@@ -93,7 +95,7 @@ export function ThemeProvider({
   }, [])
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, mounted }}>
       {children}
     </ThemeContext.Provider>
   )

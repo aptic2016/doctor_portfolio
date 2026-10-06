@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db"
 import { Prisma } from "@prisma/client"
 import { knowledgeService } from "./knowledge.service"
+import type { KnowledgeSection } from "./knowledge.service"
 
 export interface AiMessage {
   role: "user" | "assistant" | "system"
@@ -75,8 +76,26 @@ export class AiService {
       })
     }
 
-    const knowledgeContext = await knowledgeService.buildKnowledgeContext()
+    const sections = await knowledgeService.getKnowledgeSections()
     const doctorName = await this.getDoctorName()
+    const question = userMessage?.content || ""
+
+    const { context: knowledgeContext, hasRelevantContext } = this.filterRelevantSections(
+      sections,
+      question
+    )
+
+    if (!hasRelevantContext) {
+      const fallback = "I don't have confirmed information about that."
+      await prisma.aiMessage.create({
+        data: { conversationId: convId, role: "ASSISTANT", content: fallback },
+      })
+      await prisma.aiConversation.update({
+        where: { id: convId },
+        data: { lastMessageAt: new Date(), messageCount: { increment: 1 } },
+      })
+      return { content: fallback, conversationId: convId }
+    }
 
     const systemPrompt = this.buildSystemPrompt(settings, knowledgeContext, doctorName)
 
@@ -245,6 +264,117 @@ export class AiService {
         error: error instanceof Error ? error.message : "Unknown error",
       }
     }
+  }
+
+  private static readonly STOP_WORDS = new Set([
+    "a","an","the","is","are","was","were","be","been","being",
+    "have","has","had","do","does","did","will","would","could",
+    "should","may","might","shall","can","to","of","in","for",
+    "on","with","at","by","from","as","into","about","like",
+    "through","after","over","between","out","against","during",
+    "without","before","under","around","among","this","that",
+    "these","those","it","its","i","me","my","we","our","you",
+    "your","he","him","his","she","her","they","them","their",
+    "what","which","who","whom","where","when","why","how",
+    "all","each","every","both","few","more","most","other",
+    "some","such","no","not","only","same","so","than","too",
+    "very","just","because","but","and","or","if","while",
+    "also","then","here","there","now","again","once","much",
+    "any","own","same","tell","know","want","need","get",
+    "make","use","said","say","go","see","come","think",
+    "take","give","find","let","keep","help","show","try",
+    "ask","put","mean","call","ask","look","run","move",
+    "live","believe","bring","happen","must","well","back",
+    "even","still","new","first","last","long","great",
+    "little","only","other","old","right","big","high",
+    "different","small","large","next","early","young",
+    "important","public","bad","same","able","an","the",
+  ])
+
+  private tokenize(text: string): string[] {
+    return text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, " ")
+      .split(/\s+/)
+      .filter((t) => t.length >= 2 && !AiService.STOP_WORDS.has(t))
+  }
+
+  private extractDomainTerms(terms: string[]): string[] {
+    const generic = new Set([
+      "doctor","medical","health","professional",
+      "information","portfolio","work","about","practice","profile",
+      "question","answer","tell","know","help","details","data",
+    ])
+    return terms.filter((t) => !generic.has(t))
+  }
+
+  private sectionMatchesQuery(
+    section: KnowledgeSection,
+    queryTerms: string[],
+    domainTerms: string[]
+  ): number {
+    const sectionText = `${section.label} ${section.content}`.toLowerCase()
+    const sectionTokens = new Set(this.tokenize(sectionText))
+
+    let score = 0
+
+    const labelLower = section.label.toLowerCase()
+    for (const term of domainTerms) {
+      if (labelLower.includes(term)) score += 4
+    }
+
+    for (const term of domainTerms) {
+      if (sectionTokens.has(term)) score += 2
+    }
+
+    for (const term of queryTerms) {
+      if (sectionTokens.has(term)) score += 1
+    }
+
+    if (score === 0) {
+      const contentLower = section.content.toLowerCase()
+      for (const term of domainTerms) {
+        if (contentLower.includes(term)) score += 1
+      }
+    }
+
+    return score
+  }
+
+  private filterRelevantSections(
+    sections: KnowledgeSection[],
+    question: string
+  ): {
+    context: string
+    sources: string[]
+    hasRelevantContext: boolean
+  } {
+    const queryTerms = this.tokenize(question)
+    const domainTerms = this.extractDomainTerms(queryTerms)
+
+    if (domainTerms.length === 0 && queryTerms.length === 0) {
+      return { context: "", sources: [], hasRelevantContext: false }
+    }
+
+    const scored = sections
+      .map((section) => ({
+        section,
+        score: this.sectionMatchesQuery(section, queryTerms, domainTerms),
+      }))
+      .filter((s) => s.score >= 3)
+      .sort((a, b) => b.score - a.score)
+
+    if (scored.length === 0) {
+      return { context: "", sources: [], hasRelevantContext: false }
+    }
+
+    const context = scored
+      .map(({ section }) => `${section.label}: ${section.content}`)
+      .join("\n\n")
+
+    const sources = scored.map(({ section }) => section.label)
+
+    return { context, sources, hasRelevantContext: true }
   }
 
   private async getDoctorName(): Promise<string> {

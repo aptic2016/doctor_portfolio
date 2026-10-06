@@ -18,6 +18,7 @@ export async function createQualification(data: Omit<Prisma.QualificationCreateI
     profile: { connect: { id: profile.id } },
   })
   revalidatePath("/admin/qualifications")
+  revalidatePath("/qualifications")
   return { success: true }
 }
 
@@ -27,6 +28,7 @@ export async function updateQualification(id: string, data: Prisma.Qualification
 
   await contentService.updateQualification(id, data)
   revalidatePath("/admin/qualifications")
+  revalidatePath("/qualifications")
   return { success: true }
 }
 
@@ -36,6 +38,7 @@ export async function deleteQualification(id: string) {
 
   await contentService.deleteQualification(id)
   revalidatePath("/admin/qualifications")
+  revalidatePath("/qualifications")
   return { success: true }
 }
 
@@ -51,6 +54,7 @@ export async function createCertification(data: Omit<Prisma.CertificationCreateI
     profile: { connect: { id: profile.id } },
   })
   revalidatePath("/admin/qualifications")
+  revalidatePath("/qualifications")
   return { success: true }
 }
 
@@ -60,6 +64,7 @@ export async function updateCertification(id: string, data: Prisma.Certification
 
   await contentService.updateCertification(id, data)
   revalidatePath("/admin/qualifications")
+  revalidatePath("/qualifications")
   return { success: true }
 }
 
@@ -69,5 +74,6 @@ export async function deleteCertification(id: string) {
 
   await contentService.deleteCertification(id)
   revalidatePath("/admin/qualifications")
+  revalidatePath("/qualifications")
   return { success: true }
 }

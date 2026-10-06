@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 export function ThemeToggle({ className }: { className?: string }) {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, mounted } = useTheme()
 
   const options = [
     { value: "light" as const, icon: Sun, label: "Light" },
@@ -24,7 +24,7 @@ export function ThemeToggle({ className }: { className?: string }) {
           onClick={() => setTheme(opt.value)}
           className={cn(
             "h-8 w-8 p-0 rounded-md transition-all",
-            theme === opt.value
+            mounted && theme === opt.value
               ? "bg-background text-foreground shadow-sm"
               : "text-muted-foreground hover:text-foreground"
           )}

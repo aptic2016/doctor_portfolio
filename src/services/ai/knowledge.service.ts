@@ -7,6 +7,11 @@ interface KnowledgeItem {
   allowAI: boolean
 }
 
+export interface KnowledgeSection {
+  label: string
+  content: string
+}
+
 export class KnowledgeService {
   async getAIElibleKnowledge(): Promise<KnowledgeItem[]> {
     const items = await prisma.aiKnowledgeItem.findMany({
@@ -19,41 +24,25 @@ export class KnowledgeService {
     }))
   }
 
-  async buildKnowledgeContext(): Promise<string> {
+  async getKnowledgeSections(): Promise<KnowledgeSection[]> {
     const profile = await prisma.profile.findFirst()
-    if (!profile || !profile.allowAI) return ""
+    if (!profile || !profile.allowAI) return []
 
-    const sections: string[] = []
+    const sections: KnowledgeSection[] = []
 
-    if (profile.fullName) {
-      sections.push(`Name: ${profile.fullName}`)
-    }
-    if (profile.displayName) {
-      sections.push(`Display Name: ${profile.displayName}`)
-    }
-    if (profile.professionalTitle) {
-      sections.push(`Professional Title: ${profile.professionalTitle}`)
-    }
-    if (profile.shortBio) {
-      sections.push(`Bio: ${profile.shortBio}`)
-    }
-    if (profile.fullBio) {
-      sections.push(`Full Bio: ${profile.fullBio}`)
-    }
-    if (profile.currentDesignation) {
-      sections.push(`Current Position: ${profile.currentDesignation}`)
-    }
-    if (profile.currentOrganization) {
-      sections.push(`Current Organization: ${profile.currentOrganization}`)
-    }
-    if (profile.location) {
-      sections.push(`Location: ${profile.location}`)
-    }
-    if (profile.careerObjective) {
-      sections.push(`Career Objective: ${profile.careerObjective}`)
-    }
-    if (profile.philosophy) {
-      sections.push(`Philosophy: ${profile.philosophy}`)
+    const profileParts: string[] = []
+    if (profile.fullName) profileParts.push(`Name: ${profile.fullName}`)
+    if (profile.displayName) profileParts.push(`Display Name: ${profile.displayName}`)
+    if (profile.professionalTitle) profileParts.push(`Professional Title: ${profile.professionalTitle}`)
+    if (profile.shortBio) profileParts.push(`Bio: ${profile.shortBio}`)
+    if (profile.fullBio) profileParts.push(`Full Bio: ${profile.fullBio}`)
+    if (profile.currentDesignation) profileParts.push(`Current Position: ${profile.currentDesignation}`)
+    if (profile.currentOrganization) profileParts.push(`Current Organization: ${profile.currentOrganization}`)
+    if (profile.location) profileParts.push(`Location: ${profile.location}`)
+    if (profile.careerObjective) profileParts.push(`Career Objective: ${profile.careerObjective}`)
+    if (profile.philosophy) profileParts.push(`Philosophy: ${profile.philosophy}`)
+    if (profileParts.length > 0) {
+      sections.push({ label: "Profile", content: profileParts.join("\n") })
     }
 
     const education = await prisma.education.findMany({
@@ -67,7 +56,7 @@ export class KnowledgeService {
             e.endDate ? ` (${new Date(e.startDate).getFullYear()}-${new Date(e.endDate).getFullYear()})` : ""
           }`
       )
-      sections.push(`Education: ${eduList.join("; ")}`)
+      sections.push({ label: "Education", content: eduList.join("; ") })
     }
 
     const experience = await prisma.experience.findMany({
@@ -85,7 +74,7 @@ export class KnowledgeService {
               : ""
           }`
       )
-      sections.push(`Experience: ${expList.join("; ")}`)
+      sections.push({ label: "Experience", content: expList.join("; ") })
     }
 
     const qualifications = await prisma.qualification.findMany({
@@ -96,7 +85,7 @@ export class KnowledgeService {
       const qualList = qualifications.map(
         (q) => `${q.title}${q.institution ? ` from ${q.institution}` : ""}`
       )
-      sections.push(`Qualifications: ${qualList.join("; ")}`)
+      sections.push({ label: "Qualifications", content: qualList.join("; ") })
     }
 
     const certifications = await prisma.certification.findMany({
@@ -107,7 +96,7 @@ export class KnowledgeService {
       const certList = certifications.map(
         (c) => `${c.title}${c.institution ? ` from ${c.institution}` : ""}`
       )
-      sections.push(`Certifications: ${certList.join("; ")}`)
+      sections.push({ label: "Certifications", content: certList.join("; ") })
     }
 
     const publications = await prisma.publication.findMany({
@@ -118,7 +107,7 @@ export class KnowledgeService {
       const pubList = publications.map(
         (p) => `"${p.title}" (${new Date(p.publicationDate).getFullYear()})`
       )
-      sections.push(`Publications: ${pubList.join("; ")}`)
+      sections.push({ label: "Publications", content: pubList.join("; ") })
     }
 
     const achievements = await prisma.achievement.findMany({
@@ -130,7 +119,7 @@ export class KnowledgeService {
         (a) =>
           `${a.title}${a.awardingOrganization ? ` from ${a.awardingOrganization}` : ""} (${new Date(a.date).getFullYear()})`
       )
-      sections.push(`Achievements: ${achList.join("; ")}`)
+      sections.push({ label: "Achievements", content: achList.join("; ") })
     }
 
     const faqs = await prisma.faq.findMany({
@@ -139,12 +128,12 @@ export class KnowledgeService {
     })
     if (faqs.length > 0) {
       const faqList = faqs.map((f) => `Q: ${f.question} A: ${f.answer}`)
-      sections.push(`FAQs: ${faqList.join("; ")}`)
+      sections.push({ label: "FAQs", content: faqList.join("; ") })
     }
 
     const customItems = await this.getAIElibleKnowledge()
     for (const item of customItems) {
-      sections.push(`[${item.sourceType}]: ${item.content}`)
+      sections.push({ label: `[${item.sourceType}]`, content: item.content })
     }
 
     const assistantKnowledge = await prisma.aiAssistantKnowledge.findMany({
@@ -153,10 +142,19 @@ export class KnowledgeService {
     })
     if (assistantKnowledge.length > 0) {
       const akList = assistantKnowledge.map((ak) => `[${ak.category}] ${ak.title}: ${ak.content}`)
-      sections.push(`Assistant Knowledge:\n${akList.join("\n")}`)
+      sections.push({ label: "Assistant Knowledge", content: akList.join("\n") })
     }
 
-    return sections.join("\n\n")
+    return sections
+  }
+
+  async buildKnowledgeContext(): Promise<string> {
+    const sections = await this.getKnowledgeSections()
+    return sections
+      .map((section) =>
+        section.label === "Profile" ? section.content : `${section.label}: ${section.content}`
+      )
+      .join("\n\n")
   }
 
   async rebuildKnowledgeFromContent(): Promise<void> {

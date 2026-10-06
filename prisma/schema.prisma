@@ -35,6 +35,13 @@ enum MessageStatus {
   IMPORTANT
 }
 
+enum EmailDeliveryStatus {
+  PENDING
+  SENT
+  FAILED
+  SKIPPED
+}
+
 enum MediaAssetStatus {
   ACTIVE
   TRASHED
@@ -224,6 +231,36 @@ model SiteSettings {
   heroOverlayEntrance  Boolean @default(true)
   connectCue           Boolean @default(true)
   connectCueStyle      String  @default("hand-tap")
+  contactNotificationsEnabled Boolean @default(false)
+  contactNotificationEmail    String?
+  contactEmailLastSuccessAt   DateTime?
+  contactEmailLastErrorAt     DateTime?
+  contactEmailLastError       String?
+  autoReplyEnabled            Boolean @default(true)
+  emailSenderNameOverride     String?
+  emailSignatureEnabled       Boolean @default(true)
+  emailSignatureName          String?
+  emailSignatureTitle         String?
+  emailSignatureSecondaryTitle String?
+  emailSignaturePhone         String?
+  emailSignatureMobile        String?
+  emailSignatureEmail         String?
+  emailSignatureWebsite       String?
+  emailSignatureAddress       String?
+  emailSignatureText          String?
+  emailSignatureImageUrl      String?
+  emailSignaturePhotoShape    String  @default("circle")
+  emailSignatureAccent        String  @default("#0ea5e9")
+  emailSignatureBackgroundColor String?
+  emailSignatureTextColor     String?
+  autoReplyLanguageMode       String  @default("auto")
+  autoReplyEnglishSubject     String?
+  autoReplyBanglaSubject      String?
+  autoReplyEnglishBody        String?  @db.Text
+  autoReplyBanglaBody         String?  @db.Text
+  autoReplyIncludeMessage     Boolean @default(true)
+  autoReplyIncludeSignature   Boolean @default(true)
+  emailSignatureSocialVisibility String? @db.Text
   updatedAt            DateTime @updatedAt
 }
 
@@ -244,6 +281,14 @@ model HomeSection {
   mediaAltText  String?
   mediaPosition String  @default("50% 50%")
   showMedia     Boolean @default(true)
+  // Frame controls — aspect ratio, custom dimensions, size
+  frameRatio    String  @default("original")
+  frameCustomW  Int?
+  frameCustomH  Int?
+  frameSize     String  @default("medium")
+  // Stored image dimensions for original-ratio mode
+  mediaWidth    Int?
+  mediaHeight   Int?
   updatedAt    DateTime      @updatedAt
 
   @@unique([sectionId])
@@ -441,6 +486,13 @@ model GalleryItem {
   captureDate    DateTime?
   location       String?
   sortOrder      Int      @default(0)
+  // Frame / image presentation controls
+  frameRatio     String   @default("original")
+  frameCustomW   Int?
+  frameCustomH   Int?
+  frameSize      String   @default("medium")
+  mediaPosition  String   @default("50% 50%")
+  objectFit      String   @default("cover")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -465,15 +517,51 @@ model SocialLink {
 }
 
 model ContactMessage {
-  id        String        @id @default(cuid())
-  name      String
-  email     String
-  phone     String?
-  subject   String
-  message   String        @db.Text
-  status    MessageStatus @default(UNREAD)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  id                  String               @id @default(cuid())
+  name                String
+  email               String
+  phone               String?
+  subject             String
+  message             String               @db.Text
+  status              MessageStatus        @default(UNREAD)
+  emailDeliveryStatus EmailDeliveryStatus  @default(PENDING)
+  emailSentAt         DateTime?
+  emailLastError      String?
+  autoReplyStatus     EmailDeliveryStatus  @default(PENDING)
+  autoReplySentAt     DateTime?
+  autoReplyLastError  String?
+  replies             EmailReply[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+}
+
+model EmailReply {
+  id                String        @id @default(cuid())
+  contactMessageId  String
+  contactMessage    ContactMessage @relation(fields: [contactMessageId], references: [id], onDelete: Cascade)
+  subject           String
+  body              String        @db.Text
+  bodyHtml          String?       @db.Text
+  status            EmailDeliveryStatus @default(PENDING)
+  sentAt            DateTime?
+  lastError         String?
+  includeSignature  Boolean       @default(true)
+  attachments       EmailAttachment[]
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}
+
+model EmailAttachment {
+  id                String   @id @default(cuid())
+  emailReplyId      String
+  emailReply        EmailReply @relation(fields: [emailReplyId], references: [id], onDelete: Cascade)
+  filename          String
+  originalFilename  String
+  mimeType          String
+  size              Int
+  cloudinaryPublicId String?
+  cloudinaryUrl     String?
+  createdAt         DateTime @default(now())
 }
 
 model Faq {
@@ -548,6 +636,8 @@ model AiSettings {
   lastFailureAt    DateTime?
   lastErrorType    String?
   lastLatencyMs    Int?
+  onboardingNotice String?  @db.Text
+  showOnboardingNotice Boolean @default(true)
   updatedAt        DateTime @updatedAt
 }
 
@@ -727,5 +817,101 @@ model HomeSpotlightImage {
   mobileWidthPercent Float?
   mobileHeightPercent Float?
   mobileRotation     Float?
+  mediaPosition      String   @default("50% 50%")
   updatedAt   DateTime @updatedAt
+}
+
+// ============================================================
+// CV / RESUME SUBSYSTEM
+// ============================================================
+
+model CvSettings {
+  id                    String   @id @default(cuid())
+  resumeEnabled         Boolean  @default(false)
+  showInNavigation      Boolean  @default(false)
+  publicResumeEnabled   Boolean  @default(false)
+  pdfDownloadEnabled    Boolean  @default(false)
+  wordDownloadEnabled   Boolean  @default(false)
+  activePreset          String   @default("international_physician")
+  customPresetName      String?
+  showPhotoOnPublic     Boolean  @default(false)
+  photoOnPdf            Boolean  @default(false)
+  photoOnWord           Boolean  @default(false)
+  cvPhotoUrl            String?
+  photoDisplayMode      String   @default("photo") // "photo" | "empty_slot" | "none"
+  photoSource           String   @default("profile") // "profile" | "custom"
+  photoShape            String   @default("portrait")
+  cvFirstName           String?
+  cvLastName            String?
+  cvPostNominals        String?
+  cvProfessionalTitle   String?
+  cvSpecialty           String?
+  cvEmail               String?
+  cvPhone               String?
+  cvCity                String?
+  cvRegion              String?
+  cvCountry             String?
+  cvWebsite             String?
+  cvLinkedin            String?
+  demoLoaded            Boolean  @default(false)
+  updatedAt             DateTime @updatedAt
+}
+
+model CvSection {
+  id                  String  @id @default(cuid())
+  sectionKey          String  @unique
+  customTitle         String?
+  isVisible           Boolean @default(true)
+  sourceMode          String  @default("website")
+  sortOrder           Int     @default(0)
+  sortMode            String  @default("newest_first")
+  isConfigured        Boolean @default(false)
+  publicEnabled       Boolean @default(true)
+  pdfEnabled          Boolean @default(true)
+  docxEnabled         Boolean @default(true)
+  updatedAt           DateTime @updatedAt
+}
+
+model CvItemOverride {
+  id                  String   @id @default(cuid())
+  sectionKey          String
+  sourceType          String
+  sourceId            String
+  cvTitle             String?
+  cvDescription       String?  @db.Text
+  cvBullets           String?  @db.Text
+  cvInstitution       String?
+  cvLocation          String?
+  cvDepartment        String?
+  cvStartDate         DateTime?
+  cvEndDate           DateTime?
+  cvIsCurrent         Boolean?
+  cvSortOrder         Int?
+  hiddenFromCv        Boolean  @default(false)
+  fieldVisibility     Json?    // { "fieldName": { "public": bool, "pdf": bool, "docx": bool } }
+  updatedAt           DateTime @updatedAt
+
+  @@unique([sectionKey, sourceType, sourceId])
+}
+
+model CvCustomEntry {
+  id                  String   @id @default(cuid())
+  sectionKey          String
+  title               String
+  subtitle            String?
+  institution         String?
+  department          String?
+  location            String?
+  description         String?  @db.Text
+  bullets             String?  @db.Text
+  email               String?
+  phone               String?
+  startDate           DateTime?
+  endDate             DateTime?
+  isCurrent           Boolean  @default(false)
+  sortOrder           Int      @default(0)
+  isVisible           Boolean  @default(true)
+  isDemo              Boolean  @default(false)
+  fieldVisibility     Json?    // { "fieldName": { "public": bool, "pdf": bool, "docx": bool } }
+  updatedAt           DateTime @updatedAt
 }

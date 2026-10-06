@@ -22,7 +22,7 @@ interface NavItem {
 
 export function MobileBottomDock({ navItems }: { navItems: NavItem[] }) {
   const pathname = usePathname()
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, mounted } = useTheme()
   const [moreOpen, setMoreOpen] = useState(false)
   const visibleItems = navItems.filter((i) => i.isVisible && i.mobileVisible)
   const dockItems = visibleItems.slice(0, 4)
@@ -97,7 +97,9 @@ export function MobileBottomDock({ navItems }: { navItems: NavItem[] }) {
                   onClick={() => setTheme(t)}
                   className={cn(
                     "flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium rounded-lg border transition-colors capitalize",
-                    theme === t ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground"
+                    mounted && theme === t
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-border text-muted-foreground"
                   )}
                 >
                   {t === "light" && <Sun className="h-3.5 w-3.5" />}

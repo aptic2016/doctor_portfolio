@@ -18,6 +18,7 @@ export async function createExperience(data: Omit<Prisma.ExperienceCreateInput, 
     profile: { connect: { id: profile.id } },
   })
   revalidatePath("/admin/experience")
+  revalidatePath("/experience")
   return { success: true }
 }
 
@@ -27,6 +28,7 @@ export async function updateExperience(id: string, data: Prisma.ExperienceUpdate
 
   await contentService.updateExperience(id, data)
   revalidatePath("/admin/experience")
+  revalidatePath("/experience")
   return { success: true }
 }
 
@@ -36,5 +38,6 @@ export async function deleteExperience(id: string) {
 
   await contentService.deleteExperience(id)
   revalidatePath("/admin/experience")
+  revalidatePath("/experience")
   return { success: true }
 }

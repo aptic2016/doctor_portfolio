@@ -13,6 +13,10 @@ export class SeoService {
     return prisma.profile.findFirst()
   }
 
+  async getBrandSettings() {
+    return prisma.brandSettings.findFirst()
+  }
+
   async generateMetadata(options: {
     title?: string
     description?: string
@@ -20,17 +24,19 @@ export class SeoService {
     image?: string
     type?: string
   }) {
-    let seoSettings, siteSettings, profile
+    let seoSettings, siteSettings, profile, brandSettings
     try {
-      ;[seoSettings, siteSettings, profile] = await Promise.all([
+      ;[seoSettings, siteSettings, profile, brandSettings] = await Promise.all([
         this.getSeoSettings(),
         this.getSiteSettings(),
         this.getProfile(),
+        this.getBrandSettings(),
       ])
     } catch {
       seoSettings = null
       siteSettings = null
       profile = null
+      brandSettings = null
     }
 
     const siteUrl = siteSettings?.siteUrl || process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
@@ -51,7 +57,12 @@ export class SeoService {
     }
 
     const url = options.path ? `${siteUrl}${options.path}` : siteUrl
-    const image = options.image || seoSettings?.ogImage || profile?.profileImage
+    const image =
+      options.image ||
+      seoSettings?.ogImage ||
+      brandSettings?.profileImage ||
+      profile?.profileImage ||
+      undefined
 
     return {
       title,
