@@ -2,11 +2,14 @@
 
 import React, { type CSSProperties, type ReactNode } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import {
   SPOTLIGHT_GRADIENT,
   SPOTLIGHT_TEXT,
   getSpotlightStage,
+  isOptimizableImage,
   resolveSpotlightGeometry,
+  spotlightPhotoSizes,
   spotlightPhotoStyle,
   stageUnit,
   visibleSpotlightImages,
@@ -33,7 +36,24 @@ export function SpotlightBackdrop({ setting }: { setting: SpotlightSetting }) {
       <div className="absolute inset-0" style={{ backgroundImage: SPOTLIGHT_GRADIENT }} />
       {setting.backgroundImage && (
         <>
-          <img src={setting.backgroundImage} alt="" className="absolute inset-0 w-full h-full object-cover" />
+          {isOptimizableImage(setting.backgroundImage) ? (
+            <Image
+              src={setting.backgroundImage}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+              aria-hidden="true"
+            />
+          ) : (
+            <img
+              src={setting.backgroundImage}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
+              aria-hidden="true"
+            />
+          )}
           <div className="absolute inset-0 bg-[#0f2847]" style={{ opacity: setting.backgroundOverlayStrength }} />
         </>
       )}
@@ -212,6 +232,7 @@ export function SpotlightStage({
             shadowPreset={img.shadowPreset}
             frameStyle={setting.frameStyle}
             stageWidth={stage.width}
+            sizes={spotlightPhotoSizes(geo.w)}
           />
         )
         if (renderPhoto) {

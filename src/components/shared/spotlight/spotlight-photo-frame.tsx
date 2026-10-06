@@ -1,7 +1,8 @@
 "use client"
 
 import React from "react"
-import { stageUnit } from "./stage"
+import Image from "next/image"
+import { isOptimizableImage, stageUnit } from "./stage"
 
 /**
  * SPOTLIGHT PHOTO FRAME — the single frame/shadow renderer.
@@ -61,6 +62,7 @@ export function SpotlightPhotoFrame({
   shadowPreset,
   frameStyle,
   stageWidth,
+  sizes,
   className,
 }: {
   src: string | null
@@ -69,6 +71,8 @@ export function SpotlightPhotoFrame({
   shadowPreset?: string
   frameStyle?: string
   stageWidth: number
+  /** `sizes` hint for the image optimizer; ignored for non-Cloudinary sources. */
+  sizes?: string
   className?: string
 }) {
   const [failed, setFailed] = React.useState(false)
@@ -90,7 +94,7 @@ export function SpotlightPhotoFrame({
         boxSizing: "border-box",
       }}
     >
-      <div className="w-full h-full overflow-hidden" style={{ borderRadius: u(4) }}>
+      <div className="relative w-full h-full overflow-hidden" style={{ borderRadius: u(4) }}>
         {!src || failed ? (
           <div
             className="w-full h-full flex items-center justify-center bg-red-500/10 text-red-500 text-center leading-tight px-1"
@@ -98,6 +102,17 @@ export function SpotlightPhotoFrame({
           >
             Image unavailable
           </div>
+        ) : isOptimizableImage(src) ? (
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            sizes={sizes}
+            loading="lazy"
+            className="object-cover"
+            draggable={false}
+            onError={() => setFailed(true)}
+          />
         ) : (
           <img
             src={src}

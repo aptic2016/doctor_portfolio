@@ -38,8 +38,10 @@ export default async function RootLayout({
   let brandSettings = null
   let themeSettings = null
   try {
-    brandSettings = await settingsService.getBrandSettings()
-    themeSettings = await settingsService.getThemeSettings()
+    ;[brandSettings, themeSettings] = await Promise.all([
+      settingsService.getBrandSettings(),
+      settingsService.getThemeSettings(),
+    ])
   } catch {
     // Database unavailable at build time, use defaults
   }

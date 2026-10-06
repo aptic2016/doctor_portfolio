@@ -1,44 +1,38 @@
+import { cache } from "react"
 import { SettingsRepository } from "@/repositories/settings/settings.repository"
 import { BrandSettings, ThemeSettings, SiteSettings, NavigationItem, SocialLink, HomeSection, HomeSectionId, HighlightMetric, HeroOverlay } from "@prisma/client"
 
 export class SettingsService {
   private repository = new SettingsRepository()
 
-  async getBrandSettings(): Promise<BrandSettings | null> {
-    return this.repository.getBrandSettings()
-  }
+  // Read helpers are memoised for the lifetime of one request so the public
+  // layout and the footer stop issuing the same navigation/site/profile query
+  // twice per render. Mutations are deliberately left uncached.
+  getBrandSettings = cache(async (): Promise<BrandSettings | null> => this.repository.getBrandSettings())
 
   async updateBrandSettings(id: string, data: Partial<BrandSettings>): Promise<BrandSettings> {
     return this.repository.updateBrandSettings(id, data)
   }
 
-  async getThemeSettings(): Promise<ThemeSettings | null> {
-    return this.repository.getThemeSettings()
-  }
+  getThemeSettings = cache(async (): Promise<ThemeSettings | null> => this.repository.getThemeSettings())
 
   async updateThemeSettings(id: string, data: Partial<ThemeSettings>): Promise<ThemeSettings> {
     return this.repository.updateThemeSettings(id, data)
   }
 
-  async getSiteSettings(): Promise<SiteSettings | null> {
-    return this.repository.getSiteSettings()
-  }
+  getSiteSettings = cache(async (): Promise<SiteSettings | null> => this.repository.getSiteSettings())
 
   async updateSiteSettings(id: string, data: Partial<SiteSettings>): Promise<SiteSettings> {
     return this.repository.updateSiteSettings(id, data)
   }
 
-  async getNavigation(): Promise<NavigationItem[]> {
-    return this.repository.getNavigation()
-  }
+  getNavigation = cache(async (): Promise<NavigationItem[]> => this.repository.getNavigation())
 
   async getAllNavigation(): Promise<NavigationItem[]> {
     return this.repository.getAllNavigation()
   }
 
-  async getSocialLinks(): Promise<SocialLink[]> {
-    return this.repository.getSocialLinks()
-  }
+  getSocialLinks = cache(async (): Promise<SocialLink[]> => this.repository.getSocialLinks())
 
   async getAllSocialLinks(): Promise<SocialLink[]> {
     return this.repository.getAllSocialLinks()

@@ -1,10 +1,11 @@
+import { cache } from "react"
 import { ProfileRepository } from "@/repositories/profile/profile.repository"
 import { Profile, Prisma } from "@prisma/client"
 
 export class ProfileService {
   private repository = new ProfileRepository()
 
-  async getPublicProfile(): Promise<Profile | null> {
+  getPublicProfile = cache(async (): Promise<Profile | null> => {
     const profile = await this.repository.getProfile()
     if (!profile) return null
 
@@ -12,7 +13,7 @@ export class ProfileService {
     if (!profile.isVisible) return null
 
     return profile
-  }
+  })
 
   async getProfileForAdmin(): Promise<Profile | null> {
     return this.repository.getProfile()

@@ -1,3 +1,4 @@
+import { cache } from "react"
 import { ContentRepository } from "@/repositories/content/content.repository"
 import {
   Education,
@@ -161,9 +162,9 @@ export class ContentService {
     return this.repository.getPublishedArticles()
   }
 
-  async getArticleBySlug(slug: string) {
-    return this.repository.getArticleBySlug(slug)
-  }
+  // The article page reads the same slug in generateMetadata and in the page
+  // body; memoise per request so one render issues a single row read.
+  getArticleBySlug = cache(async (slug: string) => this.repository.getArticleBySlug(slug))
 
   async getArticleCategories() {
     return this.repository.getArticleCategories()

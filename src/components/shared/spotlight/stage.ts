@@ -16,6 +16,29 @@ import type { CSSProperties } from "react"
 
 export type SpotlightViewport = "desktop" | "mobile"
 
+/**
+ * Whether a media URL may be handed to `next/image`.
+ *
+ * Admin accepts free-form URLs, and `next/image` throws at render time for a
+ * hostname that is not in `images.remotePatterns`, so anything that is not the
+ * configured Cloudinary origin falls back to a plain `<img>`.
+ */
+export function isOptimizableImage(src: string | null | undefined): boolean {
+  if (!src) return false
+  try {
+    const url = new URL(src)
+    return url.protocol === "https:" && url.hostname === "res.cloudinary.com"
+  } catch {
+    return false
+  }
+}
+
+/** `sizes` for a spotlight photo: `geo.w`% of the stage, capped by the page container. */
+export function spotlightPhotoSizes(geoWidthPercent: number): string {
+  const cappedPx = Math.round((geoWidthPercent / 100) * 1240)
+  return `(min-width: 1320px) ${cappedPx}px, ${geoWidthPercent}vw`
+}
+
 export interface SpotlightImage {
   id: string
   mediaUrl: string | null

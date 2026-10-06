@@ -1,12 +1,15 @@
 import { prisma } from "@/lib/db"
+import { settingsService } from "@/services/settings/settings.service"
 
 export class SeoService {
   async getSeoSettings() {
     return prisma.seoSettings.findFirst()
   }
 
+  // Shared with the public layout/footer so metadata and the render pass of one
+  // request hit a single row read instead of querying the same table twice.
   async getSiteSettings() {
-    return prisma.siteSettings.findFirst()
+    return settingsService.getSiteSettings()
   }
 
   async getProfile() {
@@ -14,7 +17,32 @@ export class SeoService {
   }
 
   async getBrandSettings() {
-    return prisma.brandSettings.findFirst()
+    return settingsService.getBrandSettings()
+  }
+
+  /**
+   * Icon href for the metadata block.
+   *
+   * The admin favicon is a full-size Cloudinary upload (a 1.7 MB PNG in the seeded
+   * data) while a favicon is only ever rendered at 16-64px, so ask Cloudinary for a
+   * small fit instead of pulling the original on every cold visit. URLs that already
+   * carry a transformation, or that are not Cloudinary, are used untouched.
+   */
+  private faviconHref(src: string | null | undefined): string {
+    if (!src) return "/favicon.ico"
+    const marker = "/image/upload/"
+    try {
+      const url = new URL(src)
+      if (url.protocol !== "https:" || url.hostname !== "res.cloudinary.com") return src
+      const at = url.pathname.indexOf(marker)
+      if (at === -1) return src
+      const after = url.pathname.slice(at + marker.length)
+      if (!after.replace(/^v\d+\//, "").includes(".")) return src
+      url.pathname = url.pathname.slice(0, at + marker.length) + "w_128,h_128,c_fit,q_auto/" + after
+      return url.toString()
+    } catch {
+      return src
+    }
   }
 
   async generateMetadata(options: {
@@ -67,6 +95,9 @@ export class SeoService {
     return {
       title,
       description,
+      icons: {
+        icon: this.faviconHref(brandSettings?.favicon),
+      },
       openGraph: {
         title,
         description,
